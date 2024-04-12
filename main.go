@@ -1,8 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"database/sql"
+	"fmt"
+	"log"
+
+	_ "github.com/go-sql-driver/mysql"
+)
 
 func main() {
+
+	db()
+
 	for {
 		choice := displayMenu()
 		switch choice {
@@ -26,4 +35,30 @@ func displayMenu() int {
 	var choice int
 	fmt.Scan(&choice)
 	return choice
+}
+
+
+func db() {
+	db, err := sql.Open("mysql", "user:password@tcp(localhost:3306)/mydatabase")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	//rows, err := db.Query("SELECT id,name FROM test")
+
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// for rows.Next() {
+	// 	var id int
+	// 	var name string
+	// 	err = rows.Scan(&id, &name)
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+		//fmt.Println("Ligne :", id, name)
+	//}
+
+	defer db.Close()
 }
