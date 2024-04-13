@@ -4,19 +4,30 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
 
-	db()
-
+	Db_open()
+	
 	for {
 		choice := displayMenu()
 		switch choice {
+		case 1: 
+			fmt.Println("Quelle est la date de réservation (JJ MM AAAA) ?")
+			fmt.Scan(&choice)
+			
+			string result := strings.Split(choice, "")
+			string day := strings.Split(result[0], "")
+			string month := strings.Split(result[1], "")
+			string year := strings.Split(result[2], "")
+
 		case 5:
-			break
+			fmt.Println("A plus dans le bus !")
+			return 
 		}
 		fmt.Println("A plus dans le bus !")
 	}
@@ -37,28 +48,12 @@ func displayMenu() int {
 	return choice
 }
 
-
-func db() {
+func Db_open() {
 	db, err := sql.Open("mysql", "user:password@tcp(localhost:3306)/mydatabase")
-
+	
 	if err != nil {
 		log.Fatal(err)
 	}
-	//rows, err := db.Query("SELECT id,name FROM test")
-
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// for rows.Next() {
-	// 	var id int
-	// 	var name string
-	// 	err = rows.Scan(&id, &name)
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
-		//fmt.Println("Ligne :", id, name)
-	//}
 
 	defer db.Close()
 }
