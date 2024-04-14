@@ -1,4 +1,4 @@
-module GoProjectESGI2024CLI
+module Go-Project-ESGI2024-CLI
 
 go 1.22.1
 

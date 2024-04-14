@@ -1,6 +1,7 @@
 package main
 
 import (
+	db "Go-Project-ESGI2024-CLI/bdd"
 	"database/sql"
 	"fmt"
 	"log"
@@ -11,25 +12,26 @@ import (
 
 func main() {
 
-	Db_open()
-	
+	db.Db_opener()
+
 	for {
 		choice := displayMenu()
 		switch choice {
-		case 1: 
-			fmt.Println("Quelle est la date de réservation (JJ MM AAAA) ?")
-			fmt.Scan(&choice)
-			
-			string result := strings.Split(choice, "")
-			string day := strings.Split(result[0], "")
-			string month := strings.Split(result[1], "")
-			string year := strings.Split(result[2], "")
+		case 1:
+			date := ""
+			fmt.Println("Quelle est la date de réservation (JJ-MM-AAAA) ?")
+			fmt.Scan(&date)
+
+			result := strings.Split(date, "-")
+			day := result[0]
+			month := result[1]
+			year := result[2]
+			println(day, month, year)
 
 		case 5:
 			fmt.Println("A plus dans le bus !")
-			return 
+			return
 		}
-		fmt.Println("A plus dans le bus !")
 	}
 }
 
@@ -50,7 +52,7 @@ func displayMenu() int {
 
 func Db_open() {
 	db, err := sql.Open("mysql", "user:password@tcp(localhost:3306)/mydatabase")
-	
+
 	if err != nil {
 		log.Fatal(err)
 	}

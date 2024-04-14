@@ -5,10 +5,9 @@ package booking
 // 	"log"
 // )
 
-  type booking struct {
-//    reference int 
-//  	name     string
-			bookedOn date
-			duration int
-  }
-
+type booking struct {
+	//    reference int
+	//  	name     string
+	bookedOn string
+	duration int
+}
