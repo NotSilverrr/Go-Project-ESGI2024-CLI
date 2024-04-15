@@ -1,6 +1,7 @@
 package salle
 
 import (
+	"fmt"
 	"log"
 	"strconv"
 )
@@ -24,24 +25,22 @@ import (
 				log.Fatal(err)
 			}
 			
-			//fflush
-			println(room_day, month, room_year)
 			// ---- //
 			// VERIF DATES CORRECTES //
 			// ---- //
 
-  	 	rows, err := db.Query("Select name FROM room WHERE booked = 0")
+  	 	rows, err := db.Query("Select name FROM room WHERE ?") //condition d'affichage
 
- 		// if err != nil {
- 		// 	log.Fatal(err)
- 		// }
- 		// defer rows.Close()
+ 		 if err != nil {
+ 		 	log.Fatal(err)
+ 		 }
+ 		 defer rows.Close()
 
- 		// for rows.Next() {
- 		// 	var name string
- 		// 	if err := rows.Scan(&name); err != nil {
- 		// 		log.Fatal(err)
- 		// 	}
- 		// 	fmt.Println(name)
- 		// }
+ 		 for rows.Next() {
+ 		 	var name string
+ 		 	if err := rows.Scan(&name); err != nil {
+ 		 		log.Fatal(err)
+ 		 	}
+ 		 	fmt.Println(name)
+ 		 }
   }
