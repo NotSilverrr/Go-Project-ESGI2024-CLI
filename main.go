@@ -2,6 +2,7 @@ package main
 
 import (
 	db "Go-Project-ESGI2024-CLI/bdd"
+	room "Go-Project-ESGI2024-CLI/room"
 	"database/sql"
 	"fmt"
 	"log"
@@ -26,8 +27,10 @@ func main() {
 			day := result[0]
 			month := result[1]
 			year := result[2]
-			println(day, month, year)
 
+			//println(day, month, year)
+
+			room.ShowAvailableRooms(day, month, year) //change to room
 		case 5:
 			fmt.Println("A plus dans le bus !")
 			return
