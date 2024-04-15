@@ -26,10 +26,10 @@ import (
 			}
 			
 			// ---- //
-			// VERIF DATES CORRECTES //
+			// VERIF CORRECT DATES //
 			// ---- //
 
-  	 	rows, err := db.Query("Select name FROM room WHERE ?") //condition d'affichage
+  	 	rows, err := db.Query("Select name FROM room WHERE ?") // //display condition with prepared request
 
  		 if err != nil {
  		 	log.Fatal(err)
