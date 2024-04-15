@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS booking;
 
 USE booking;
 
-CREATE TABLE IF NOT EXISTS salles
+CREATE TABLE IF NOT EXISTS room
 (
     id PRIMARY KEY
 	name VARCHAR(100),
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS salles
 	booked BOOLEAN DEFAULT False 
 );
 
-INSERT INTO salles
+INSERT INTO room
 VALUES (1, "Colza", 100, False);
 
 INSERT INTO salles

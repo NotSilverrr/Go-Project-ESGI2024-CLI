@@ -26,9 +26,11 @@ import (
 			
 			//fflush
 			println(room_day, month, room_year)
+			// ---- //
+			// VERIF DATES CORRECTES //
+			// ---- //
 
-
-  	// 	rows, err := db.Query("Select name FROM salles WHERE booked = 0")
+  	 	rows, err := db.Query("Select name FROM room WHERE booked = 0")
 
  		// if err != nil {
  		// 	log.Fatal(err)
