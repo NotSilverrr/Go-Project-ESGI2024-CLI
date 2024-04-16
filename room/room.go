@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -16,18 +15,7 @@ type Salle struct {
 }
 
 func ShowAvailableRooms(day string, month string, year string, db *sql.DB) {
-	room_day, err := strconv.Atoi(day)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	room_year, err := strconv.Atoi(month)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	GetDate()
 	// ---- //
 	// VERIF CORRECT DATES //
 	// ---- //

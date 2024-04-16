@@ -2,8 +2,10 @@ package main
 
 import (
 	db "Go-Project-ESGI2024-CLI/bdd"
-	room "Go-Project-ESGI2024-CLI/room"
 	"fmt"
+	"log"
+	"regexp"
+	"strconv"
 	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -18,18 +20,9 @@ func main() {
 		choice := displayMenu()
 		switch choice {
 		case 1:
-			date := ""
-			fmt.Println("Quelle est la date de réservation (JJ-MM-AAAA) ?")
-			fmt.Scan(&date)
+			GetDate()
 
-			result := strings.Split(date, "-")
-			day := result[0]
-			month := result[1]
-			year := result[2]
-
-			//println(day, month, year)
-
-			room.ShowAvailableRooms(day, month, year) //change to room
+			//room.ShowAvailableRooms(day, month, year) //change to room
 		case 5:
 			fmt.Println("A plus dans le bus !")
 			return
@@ -50,4 +43,38 @@ func displayMenu() int {
 	var choice int
 	fmt.Scan(&choice)
 	return choice
+}
+
+func GetDate(){
+	for{
+		date := ""
+		fmt.Println("Quelle est la date de réservation (JJ-MM-AAAA) ?")
+		fmt.Scan(&date)
+		
+		correctDate := regexp.MustCompile(`^\d{2}-\d{2}-\d{4}$`)
+		if !correctDate.MatchString(date) {
+			fmt.Println("Format de date invalide. Veuillez entrer une date au format JJ-MM-AAAA.")
+			continue
+		}
+
+		result := strings.Split(date, "-")
+
+		day, err := strconv.Atoi(result[0])
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		month, err := strconv.Atoi(result[1])
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		year, err := strconv.Atoi(result[2])
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println(day, month, year)
+		break //need return later
+	}
 }
