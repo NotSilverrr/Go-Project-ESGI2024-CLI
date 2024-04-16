@@ -21,6 +21,8 @@ func main() {
 		choice := displayMenu()
 		switch choice {
 		case 1:
+
+		case 2:
 			day, month, year := GetDate()
 			hour, minut := getTime()
 			fmt.Printf("Vous avez réservé le %02d/%02d/%02d pour %02d:%02d\n", day, month, year, hour, minut)
@@ -45,8 +47,8 @@ func displayMenu() int {
 	return choice
 }
 
-func GetDate() (int, int, int){
-	for{
+func GetDate() (int, int, int) {
+	for {
 		date := ""
 		fmt.Println("Quelle est la date de réservation (JJ-MM-AAAA) ?")
 		fmt.Scan(&date)
@@ -77,8 +79,8 @@ func GetDate() (int, int, int){
 	}
 }
 
-func getTime() (int, int){
-	for{
+func getTime() (int, int) {
+	for {
 		startHour := ""
 		fmt.Println("Quelle est l'heure du début de réservation (HH:MM) ?")
 		fmt.Scan(&startHour)
@@ -113,7 +115,7 @@ func verifDate(date string) string {
 	return "ok"
 }
 
-func verifTime(startHour string) string{
+func verifTime(startHour string) string {
 	correctHour := regexp.MustCompile(`^\d{2}:\d{2}$`)
 	if !correctHour.MatchString(startHour) {
 		err := "Format d'heure invalide. Veuillez entrer une heure au format HH:MM."
