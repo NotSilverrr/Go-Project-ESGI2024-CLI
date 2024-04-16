@@ -21,11 +21,25 @@ func main() {
 		choice := displayMenu()
 		switch choice {
 		case 1:
+			startContext := "de début"
+			endContext := "de fin"
+
+			startDay, startMonth, startYear := GetDate(startContext)
+			startHour, startMinut := getTime(startContext)
+			
+			endDay, endMonth, endYear := GetDate(endContext)
+			endHour, endMinut := getTime(endContext)
+
+			fmt.Printf("Votre réservation commencera le %02d/%02d/%02d pour %02d:%02d\n", startDay, startMonth, startYear, startHour, startMinut)
+
+			fmt.Printf("Votre réservation se terminera le %02d/%02d/%02d pour %02d:%02d\n", endDay, endMonth, endYear, endHour, endMinut)
 
 		case 2:
-			day, month, year := GetDate()
-			hour, minut := getTime()
+			startContext := "de début"
+			day, month, year := GetDate(startContext)
+			hour, minut := getTime(startContext)
 			fmt.Printf("Vous avez réservé le %02d/%02d/%02d pour %02d:%02d\n", day, month, year, hour, minut)
+
 		case 5:
 			fmt.Println("A plus dans le bus !")
 			return
@@ -47,10 +61,10 @@ func displayMenu() int {
 	return choice
 }
 
-func GetDate() (int, int, int) {
-	for {
+func GetDate(context string) (int, int, int){
+	for{
 		date := ""
-		fmt.Println("Quelle est la date de réservation (JJ-MM-AAAA) ?")
+		fmt.Printf("Quelle est la date %s de réservation (JJ-MM-AAAA) ?\n", context)
 		fmt.Scan(&date)
 
 		if msg := verifDate(date); msg != "ok" {
@@ -79,10 +93,10 @@ func GetDate() (int, int, int) {
 	}
 }
 
-func getTime() (int, int) {
-	for {
+func getTime(context string) (int, int){
+	for{
 		startHour := ""
-		fmt.Println("Quelle est l'heure du début de réservation (HH:MM) ?")
+		fmt.Printf("Quelle est l'heure %s de réservation (HH:MM) ?\n", context)
 		fmt.Scan(&startHour)
 
 		if msg := verifTime(startHour); msg != "ok" {
