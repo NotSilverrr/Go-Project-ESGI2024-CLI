@@ -55,6 +55,12 @@ func CreateReservation(db *sql.DB) {
 	}
 }
 
-func CancelReservation() {}
+func CancelReservation(id int, db *sql.DB) {
+	res, err := db.Exec("DELETE FROM réservation WHERE id_salle=?", id)
+	println(res)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 
 func DisplayReservation() {}
