@@ -2,6 +2,7 @@ package main
 
 import (
 	db "Go-Project-ESGI2024-CLI/bdd"
+	book "Go-Project-ESGI2024-CLI/booking"
 	"fmt"
 	"log"
 	"regexp"
@@ -23,9 +24,16 @@ func main() {
 		case 1:
 
 		case 2:
-			day, month, year := GetDate()
-			hour, minut := getTime()
-			fmt.Printf("Vous avez réservé le %02d/%02d/%02d pour %02d:%02d\n", day, month, year, hour, minut)
+			var room_id int
+			fmt.Println("Choisissez une id de salle")
+			fmt.Scan(&room_id)
+			days, months, years := GetDate()
+			daye, monthe, yeare := GetDate()
+			hours, minuts := getTime()
+			houre, minute := getTime()
+			println(monthe, months, yeare, years, minute, minuts)
+			book.CreateReservation(room_id, days, daye, hours, houre, connec)
+			//fmt.Printf("Vous avez réservé le %02d/%02d/%02d pour %02d:%02d\n", day, month, year, hour, minut)
 		case 5:
 			fmt.Println("A plus dans le bus !")
 			return

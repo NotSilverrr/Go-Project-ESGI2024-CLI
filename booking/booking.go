@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -15,24 +16,33 @@ type booking struct {
 	duration  int
 }
 
-func CreateReservation(idSalle int, d_start string, d_end string, h_start string, h_end string, db *sql.DB) {
-	VerifResa(idSalle, d_start, d_end, h_start, h_end, db)
+func CreateReservation(idSalle int, dstart int, dend int, hstart int, hend int, db *sql.DB) {
+	verif := VerifResa(idSalle, dstart, dend, hstart, hend, db)
+	if verif != "ok" {
+		println(verif)
+	}
 
 	fmt.Println("Quelle salle souhaitez vous réserver ?")
 
-	res, err := db.Exec("INSERT INTO reservation (salle_id,date_start,date_end,time_start,time_end) VALUES (?,?,?,?,?)", idSalle, d_start, d_end, h_start, h_end)
+	res, err := db.Exec("INSERT INTO reservation (salle_id,date_start,date_end,time_start,time_end) VALUES (?,?,?,?,?)", idSalle, dstart, dend, hstart, hend)
 
 	if err != nil {
+		println(res)
 		log.Fatal(err)
 	}
 	println("Votre réservation a bien été validé")
 }
 
-func VerifResa(roomID int, d_start string, d_end string, h_start string, h_end string, db *sql.DB) string {
-	var date_start string
-	var date_end string
-	var time_start string
-	var time_end string
+func VerifResa(roomID int, dstart int, dend int, hstart int, hend int, db *sql.DB) string {
+	var datestart string
+	var dateend string
+	var timestart string
+	var timeend string
+
+	datestartint, err := strconv.Atoi(datestart)
+	dateendint, err := strconv.Atoi(dateend)
+	timestartint, err := strconv.Atoi(timestart)
+	timeendint, err := strconv.Atoi(timeend)
 
 	rows, err := db.Query("Select id,date_start,date_end,time_start,time_end FROM reservation WHERE id_salle=?", roomID)
 
@@ -41,49 +51,57 @@ func VerifResa(roomID int, d_start string, d_end string, h_start string, h_end s
 	}
 
 	for rows.Next() {
-		err = rows.Scan(&date_start, &date_end, &time_start, &time_end)
+		err = rows.Scan(&datestart, &dateend, &timestart, &timeend)
 
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		if d_start >= date_start || d_start <= date_end && d_start >= date_start {
-			return "Cette salle n'est pas disponible le" + d_start
+		if dstart >= datestartint || dstart <= dateendint && dstart >= datestartint {
+			dstartstr := strconv.Itoa(dstart)
+			return "Cette salle n'est pas disponible le" + dstartstr
 		}
-		if d_start == date_start {
-			if d_start != date_end {
-				if h_start > time_start {
-					return "Cette salle n'est pas disponible a" + h_start
+		if dstart == datestartint {
+			if dstart != dateendint {
+				if hstart > timestartint {
+					hstartstr := strconv.Itoa(hstart)
+					return "Cette salle n'est pas disponible a" + hstartstr
 				}
 			} else {
-				if h_start > time_start && h_start < time_end {
-					return "Cette salle n'est pas disponible a" + h_start
+				if hstart > timestartint && hstart < timeendint {
+					hstartstr := strconv.Itoa(hstart)
+					return "Cette salle n'est pas disponible a" + hstartstr
 				}
 			}
 		}
 
-		if d_end >= date_start || d_end <= date_end && d_end > date_start {
-			return "Cette salle n'est pas disponible le" + d_end
+		if dend >= datestartint || dend <= dateendint && dend > datestartint {
+			dendstr := strconv.Itoa(dend)
+			return "Cette salle n'est pas disponible le" + dendstr
 		}
-		if d_end == date_start {
-			if d_end != date_end {
-				if h_end > time_start {
-					return "Cette salle n'est pas disponible a" + h_end
+		if dend == datestartint {
+			if dend != dateendint {
+				if hend > timestartint {
+					hendstr := strconv.Itoa(hend)
+					return "Cette salle n'est pas disponible a" + hendstr
 				}
 			} else {
-				if h_end > time_start && h_end < time_end {
-					return "Cette salle n'est pas disponible a" + h_end
+				if hend > timestartint && hend < timeendint {
+					hendstr := strconv.Itoa(hend)
+					return "Cette salle n'est pas disponible a" + hendstr
 				}
 			}
 		}
 
 	}
+	return "ok"
 }
 
 func CancelReservation(id int, db *sql.DB) {
 	res, err := db.Exec("DELETE FROM reservation WHERE id_salle=?", id)
 
 	if err != nil {
+		println(res)
 		log.Fatal(err)
 	}
 }
@@ -91,10 +109,10 @@ func CancelReservation(id int, db *sql.DB) {
 func DisplayReservation(roomID int, db *sql.DB) {
 	var name string
 	var id string
-	var date_start string
-	var date_end string
-	var time_start string
-	var time_end string
+	var datestart string
+	var dateend string
+	var timestart string
+	var timeend string
 	rows, err := db.Query("Select id,date_start,date_end,time_start,time_end FROM reservation WHERE id_salle=?", roomID)
 	rowsRoom, err := db.Query("Select name FROM room WHERE id=?", roomID)
 
@@ -108,13 +126,13 @@ func DisplayReservation(roomID int, db *sql.DB) {
 	}
 	println("Réservations pour ", name)
 	for rows.Next() {
-		err = rowsRoom.Scan(&id, &date_start, &date_end, &time_start, &time_end)
+		err = rowsRoom.Scan(&id, &datestart, &dateend, &timestart, &timeend)
 
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		println(id, ".", date_start, time_start, " - ", date_end, time_end)
+		println(id, ".", datestart, timestart, " - ", dateend, timeend)
 	}
 
 }
