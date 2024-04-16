@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS room
 	capacity INT,
 );
 
-CREATE TABLE IF NOT EXISTS réservation
+CREATE TABLE IF NOT EXISTS reservation
 (
     id PRIMARY KEY,
 	id_salle INT,
