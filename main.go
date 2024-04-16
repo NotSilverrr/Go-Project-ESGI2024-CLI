@@ -2,7 +2,7 @@ package main
 
 import (
 	db "Go-Project-ESGI2024-CLI/bdd"
-	//room "Go-Project-ESGI2024-CLI/room"
+	room "Go-Project-ESGI2024-CLI/room"
 	time "Go-Project-ESGI2024-CLI/time"
 
 	"fmt"
@@ -20,7 +20,7 @@ func main() {
 		choice := displayMenu()
 		switch choice {
 		case 1:
-			//room.ShowAvailableRooms()
+			room.ShowAvailableRooms(connec)
 
 		case 2:
 			startContext := "de début"

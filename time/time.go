@@ -66,3 +66,6 @@ func GetTime(context string) (int, int) {
 		return hour, minut
 	}
 }
+
+//todo
+//verification of correct duration beetween the two dates

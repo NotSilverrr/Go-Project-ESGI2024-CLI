@@ -5,6 +5,7 @@ import (
 	time "Go-Project-ESGI2024-CLI/time"
 	"database/sql"
 	"fmt"
+	"log"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -15,37 +16,32 @@ type Salle struct {
 	booked   bool
 }
 
-func ShowAvailableRooms(day string, month string, year string, db *sql.DB) {
+func ShowAvailableRooms(db *sql.DB) {
 
 	startContext := "de début"
 	endContext := "de fin"
 
-	startDay, startMonth, startYear := time.GetDate(startContext)
+	//user choose start date and hour for is reservation
+	startDay, startMonth, startYear := time.GetDate(startContext) 
 	startHour, startMinut := time.GetTime(startContext)
 	
+	//user choose end date and hour for is reservation
 	endDay, endMonth, endYear := time.GetDate(endContext)
 	endHour, endMinut := time.GetTime(endContext)
 
-	fmt.Printf("Votre réservation commencera le %02d/%02d/%02d pour %02d:%02d\n", startDay, startMonth, startYear, startHour, startMinut)
+	fmt.Printf("Vous avez choisi une réservation commençant le %02d/%02d/%02d à %02d:%02d et se terminant le %02d/%02d/%02d à %02d:%02d.\nLes salles disponibles sont les suivantes : \n", startDay, startMonth, startYear, startHour, startMinut, endDay, endMonth, endYear, endHour, endMinut)
 
-	fmt.Printf("Votre réservation se terminera le %02d/%02d/%02d pour %02d:%02d\n", endDay, endMonth, endYear, endHour, endMinut)
+	rows, err := db.Query("Select * from room")
 
-	// ---- //
-	// VERIF CORRECT DATES //
-	// ---- //
-
-	// rows, err := db.Query("Select name FROM room WHERE ?") // //display condition with prepared request
-
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// defer rows.Close()
-
-	// for rows.Next() {
-	// 	var name string
-	// 	if err := rows.Scan(&name); err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// 	fmt.Println(name)
-	// }
+	if err != nil {
+		log.Fatal(err)
+	 }
+	 
+	 for rows.Next() {
+	 	var name string
+	 	if err := rows.Scan(&name); err != nil {
+	 		log.Fatal(err)
+	 	}
+	 	fmt.Println(name)
+	 }
 }
