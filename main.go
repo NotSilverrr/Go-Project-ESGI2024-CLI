@@ -3,9 +3,7 @@ package main
 import (
 	db "Go-Project-ESGI2024-CLI/bdd"
 	room "Go-Project-ESGI2024-CLI/room"
-	"database/sql"
 	"fmt"
-	"log"
 	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -13,7 +11,8 @@ import (
 
 func main() {
 
-	db.Db_opener()
+	connec := db.Db_opener()
+	println(connec)
 
 	for {
 		choice := displayMenu()
@@ -51,14 +50,4 @@ func displayMenu() int {
 	var choice int
 	fmt.Scan(&choice)
 	return choice
-}
-
-func Db_open() {
-	db, err := sql.Open("mysql", "user:password@tcp(localhost:3306)/mydatabase")
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	defer db.Close()
 }
