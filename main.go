@@ -21,7 +21,7 @@ func main() {
 		switch choice {
 		case 1:
 			GetDate()
-
+			break
 			//room.ShowAvailableRooms(day, month, year) //change to room
 		case 5:
 			fmt.Println("A plus dans le bus !")
@@ -45,12 +45,12 @@ func displayMenu() int {
 	return choice
 }
 
-func GetDate(){
-	for{
+func GetDate() {
+	for {
 		date := ""
 		fmt.Println("Quelle est la date de réservation (JJ-MM-AAAA) ?")
 		fmt.Scan(&date)
-		
+
 		correctDate := regexp.MustCompile(`^\d{2}-\d{2}-\d{4}$`)
 		if !correctDate.MatchString(date) {
 			fmt.Println("Format de date invalide. Veuillez entrer une date au format JJ-MM-AAAA.")
