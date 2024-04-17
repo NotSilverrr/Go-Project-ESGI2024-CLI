@@ -13,7 +13,6 @@ import (
 func main() {
 
 	connec := db.Db_opener()
-	println(connec)
 
 	fmt.Println("Bienvenue dans le Service de Réservation en Ligne")
 	for {
@@ -38,6 +37,7 @@ func main() {
 
 		case 5:
 			fmt.Println("A plus dans le bus !")
+			db.Db_closer(connec)
 			return
 		}
 	}
