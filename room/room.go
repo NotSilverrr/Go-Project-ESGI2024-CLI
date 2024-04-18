@@ -31,7 +31,7 @@ func ShowAvailableRooms(db *sql.DB) {
 
 	fmt.Printf("Vous avez choisi une réservation commençant le %02d/%02d/%02d à %02d:%02d et se terminant le %02d/%02d/%02d à %02d:%02d.\nLes salles disponibles sont les suivantes : \n", startDay, startMonth, startYear, startHour, startMinut, endDay, endMonth, endYear, endHour, endMinut)
 
-	rows, err := db.Query("Select name from room")
+	rows, err := db.Query("Select name from room") //booked condition
 
 	if err != nil {
 		log.Fatal(err)

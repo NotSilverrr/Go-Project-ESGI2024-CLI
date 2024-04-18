@@ -11,9 +11,9 @@ func VerifDate(date string) string {
 	return "ok"
 }
 
-func VerifTime(startHour string) string {
+func VerifTime(hour string) string {
 	correctHour := regexp.MustCompile(`^\d{2}:\d{2}$`)
-	if !correctHour.MatchString(startHour) {
+	if !correctHour.MatchString(hour) {
 		err := "Format d'heure invalide. Veuillez entrer une heure au format HH:MM."
 		return err
 	}
