@@ -10,69 +10,25 @@ import (
 
 func GetDate() (int, int, int, int, int, int) {
 	for {
-		startDate := ""
 		fmt.Printf("Quelle est la date de début de réservation (JJ-MM-AAAA) ?\n")
-		fmt.Scan(&startDate)
-
-		if msg := verif.VerifDate(startDate); msg != "ok" {
-			fmt.Println(msg)
-			continue
-		}
-
-		startResult := strings.Split(startDate, "-")
-
-		startDay, err := strconv.Atoi(startResult[0])
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		startMonth, err := strconv.Atoi(startResult[1])
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		startYear, err := strconv.Atoi(startResult[2])
-		if err != nil {
-			log.Fatal(err)
-		}
+		startDay, startMonth, startYear := verif.ConvertStringToInt()
 
 		if msg := verif.IsDateLogic(startDay, startMonth, startYear); msg != "ok" {
 			fmt.Println(msg)
 			continue
 		}
 
-		endDate := ""
-		fmt.Printf("Quelle est la date de fin de réservation (JJ-MM-AAAA) ?\n")
-		fmt.Scan(&endDate)
+		for {
+			fmt.Printf("Quelle est la date de fin de réservation (JJ-MM-AAAA) ?\n")
+			endDay, endMonth, endYear := verif.ConvertStringToInt()
 
-		if msg := verif.VerifDate(startDate); msg != "ok" {
-			fmt.Println(msg)
-			continue
+			if msg := verif.IsDateLogic(endDay, endMonth, endYear); msg != "ok" {
+				fmt.Println(msg)
+				continue
+			}
+
+			return startDay, startMonth, startYear, endDay, endMonth, endYear
 		}
-
-		endResult := strings.Split(endDate, "-")
-
-		endDay, err := strconv.Atoi(endResult[0])
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		endMonth, err := strconv.Atoi(endResult[1])
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		endYear, err := strconv.Atoi(endResult[2])
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		if msg := verif.IsDateLogic(endDay, endMonth, endYear); msg != "ok" {
-			fmt.Println(msg)
-			continue
-		}
-		
-		return startDay, startMonth, startYear, endDay, endMonth, endYear
 	}
 }
 
@@ -102,6 +58,3 @@ func GetTime(context string) (int, int) {
 		return hour, minut
 	}
 }
-
-//todo
-//verification of correct duration beetween the two dates

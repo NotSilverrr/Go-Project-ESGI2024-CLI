@@ -16,10 +16,6 @@ type Salle struct {
 }
 
 func ShowAvailableRooms(db *sql.DB) {
-
-	//startContext := "de début"
-	//endContext := "de fin"
-
 	//user choose start date and hour for is reservation
 	startDay, startMonth, startYear, endDay, endMonth, endYear:= time.GetDate() 
 	//startHour, startMinut := time.GetTime(startContext)
