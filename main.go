@@ -1,7 +1,7 @@
 package main
 
 import (
-	db "Go-Project-ESGI2024-CLI/bdd"
+	db "Go-Project-ESGI2024-CLI/db"
 	room "Go-Project-ESGI2024-CLI/room"
 	time "Go-Project-ESGI2024-CLI/time"
 
