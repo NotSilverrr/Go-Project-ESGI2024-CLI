@@ -17,13 +17,12 @@ type Salle struct {
 
 func ShowAvailableRooms(db *sql.DB) {
 	//user choose start date and hour for is reservation
-	startDay, startMonth, startYear, endDay, endMonth, endYear:= time.GetDate() 
-	//startHour, startMinut := time.GetTime(startContext)
-	
-	//user choose end date and hour for is reservation
-	//endHour, endMinut := time.GetTime(endContext)
+	startDay, startMonth, startYear, 
+	startHour, startMinut, 
+	endDay, endMonth, endYear,
+	endHour, endMinut:= time.GetBook() 
 
-	fmt.Printf("Vous avez choisi une réservation commençant le %02d/%02d/%02d à [time] et se terminant le %02d/%02d/%02d à [time].\nLes salles disponibles sont les suivantes : \n", startDay, startMonth, startYear, endDay, endMonth, endYear)
+	fmt.Printf("Vous avez choisi une réservation commençant le %02d/%02d/%02d à %02d:%02d et se terminant le %02d/%02d/%02d à %02d:%02d.\nLes salles disponibles sont les suivantes : \n", startDay, startMonth, startYear, startHour, startMinut, endDay, endMonth, endYear, endHour, endMinut)
 
 	rows, err := db.Query("Select name from room") //booked condition
 

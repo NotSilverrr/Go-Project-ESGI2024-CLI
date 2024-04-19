@@ -8,42 +8,75 @@ import (
 	"strings"
 )
 
-func GetBook() (int, int, int, int, int, int) {
+func GetBook() (int, int, int, int, int, int, int, int, int, int) {
+	startContext := "de début"
+	endContext := "de fin"
+
 	for {
-		fmt.Printf("Quelle est la date de début de réservation (JJ-MM-AAAA) ?\n")
-		startDay, startMonth, startYear := GetDate()
+		startDay, startMonth, startYear := GetDate(startContext)
 
 		if msg := verif.IsDateLogic(startDay, startMonth, startYear); msg != "ok" {
 			fmt.Println(msg)
 			continue
 		}
 
+		startHour, startMinut := GetTime(startContext)
+
 		for {
-			fmt.Printf("Quelle est la date de fin de réservation (JJ-MM-AAAA) ?\n")
-			endDay, endMonth, endYear := GetDate()
+			endDay, endMonth, endYear := GetDate(endContext)
 
 			if msg := verif.IsDateLogic(endDay, endMonth, endYear); msg != "ok" {
 				fmt.Println(msg)
 				continue
 			}
 
-			return startDay, startMonth, startYear, endDay, endMonth, endYear
+			endHour, endMinut := GetTime(endContext)
+
+			return startDay, startMonth, startYear, startHour, startMinut, endDay, endMonth, endYear, endHour, endMinut
 		}
 	}
 }
 
+func GetDate(dayContext string) (int,int,int){
+	date := ""
+	fmt.Printf("Quelle est la date %s de réservation (JJ-MM-AAAA) ?\n", dayContext)
+	fmt.Scan(&date)
+	
+	if msg := verif.VerifDate(date); msg != "ok" {
+		fmt.Println(msg)
+	}
+	
+	result := strings.Split(date, "-")
+	
+	day, err := strconv.Atoi(result[0])
+	if err != nil {
+		log.Fatal(err)
+	}
+	
+	month, err := strconv.Atoi(result[1])
+	if err != nil {
+		log.Fatal(err)
+	}
+	
+	year, err := strconv.Atoi(result[2])
+	if err != nil {
+		log.Fatal(err)
+	}
+	return day, month, year
+}
+
 func GetTime(context string) (int, int) {
 	for {
-		startHour := ""
+		time := ""
 		fmt.Printf("Quelle est l'heure %s de réservation (HH:MM) ?\n", context)
-		fmt.Scan(&startHour)
+		fmt.Scan(&time)
 
-		if msg := verif.VerifTime(startHour); msg != "ok" {
+		if msg := verif.VerifTime(time); msg != "ok" {
 			fmt.Println(msg)
 			continue
 		}
 
-		result := strings.Split(startHour, ":")
+		result := strings.Split(time, ":")
 
 		hour, err := strconv.Atoi(result[0])
 		if err != nil {
@@ -57,32 +90,4 @@ func GetTime(context string) (int, int) {
 
 		return hour, minut
 	}
-}
-
-func GetDate() (int,int,int){
-	date := ""
-	fmt.Scan(&date)
-
-
-	if msg := verif.VerifDate(date); msg != "ok" {
-		fmt.Println(msg)
-	}
-
-	result := strings.Split(date, "-")
-
-	day, err := strconv.Atoi(result[0])
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	month, err := strconv.Atoi(result[1])
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	year, err := strconv.Atoi(result[2])
-	if err != nil {
-		log.Fatal(err)
-	}
-	return day, month, year
 }
