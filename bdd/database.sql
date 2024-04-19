@@ -18,5 +18,14 @@ CREATE TABLE IF NOT EXISTS reservation (
     FOREIGN KEY (id_salle) REFERENCES room(id)
 );
 
-INSERT INTO room(id, name, capacity)
-VALUES (1, "Colza", 100);
+INSERT INTO room(name, capacity)
+VALUES ("Colza", 100);
+
+INSERT INTO room(name, capacity)
+VALUES ("Rose", 50);
+
+INSERT INTO room(name, capacity)
+VALUES ("Tournesol", 100);
+
+INSERT INTO room(name, capacity)
+VALUES ("Tulipe", 100);
