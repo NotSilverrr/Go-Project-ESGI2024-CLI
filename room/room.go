@@ -1,7 +1,6 @@
 package salle
 
 import (
-	//"Go-Project-ESGI2024-CLI/main"
 	time "Go-Project-ESGI2024-CLI/time"
 	"database/sql"
 	"fmt"
@@ -18,18 +17,17 @@ type Salle struct {
 
 func ShowAvailableRooms(db *sql.DB) {
 
-	startContext := "de début"
-	endContext := "de fin"
+	//startContext := "de début"
+	//endContext := "de fin"
 
 	//user choose start date and hour for is reservation
-	startDay, startMonth, startYear := time.GetDate(startContext) 
-	startHour, startMinut := time.GetTime(startContext)
+	startDay, startMonth, startYear, endDay, endMonth, endYear:= time.GetDate() 
+	//startHour, startMinut := time.GetTime(startContext)
 	
 	//user choose end date and hour for is reservation
-	endDay, endMonth, endYear := time.GetDate(endContext)
-	endHour, endMinut := time.GetTime(endContext)
+	//endHour, endMinut := time.GetTime(endContext)
 
-	fmt.Printf("Vous avez choisi une réservation commençant le %02d/%02d/%02d à %02d:%02d et se terminant le %02d/%02d/%02d à %02d:%02d.\nLes salles disponibles sont les suivantes : \n", startDay, startMonth, startYear, startHour, startMinut, endDay, endMonth, endYear, endHour, endMinut)
+	fmt.Printf("Vous avez choisi une réservation commençant le %02d/%02d/%02d à [time] et se terminant le %02d/%02d/%02d à [time].\nLes salles disponibles sont les suivantes : \n", startDay, startMonth, startYear, endDay, endMonth, endYear)
 
 	rows, err := db.Query("Select name from room") //booked condition
 

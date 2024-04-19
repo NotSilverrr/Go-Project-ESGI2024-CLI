@@ -8,40 +8,71 @@ import (
 	"strings"
 )
 
-func GetDate(context string) (int, int, int) {
+func GetDate() (int, int, int, int, int, int) {
 	for {
-		date := ""
-		fmt.Printf("Quelle est la date %s de réservation (JJ-MM-AAAA) ?\n", context)
-		fmt.Scan(&date)
+		startDate := ""
+		fmt.Printf("Quelle est la date de début de réservation (JJ-MM-AAAA) ?\n")
+		fmt.Scan(&startDate)
 
-		if msg := verif.VerifDate(date); msg != "ok" {
+		if msg := verif.VerifDate(startDate); msg != "ok" {
 			fmt.Println(msg)
 			continue
 		}
 
-		result := strings.Split(date, "-")
+		startResult := strings.Split(startDate, "-")
 
-		day, err := strconv.Atoi(result[0])
+		startDay, err := strconv.Atoi(startResult[0])
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		month, err := strconv.Atoi(result[1])
+		startMonth, err := strconv.Atoi(startResult[1])
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		year, err := strconv.Atoi(result[2])
+		startYear, err := strconv.Atoi(startResult[2])
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		if msg := verif.IsDateLogic(day, month, year); msg != "ok" {
+		if msg := verif.IsDateLogic(startDay, startMonth, startYear); msg != "ok" {
+			fmt.Println(msg)
+			continue
+		}
+
+		endDate := ""
+		fmt.Printf("Quelle est la date de fin de réservation (JJ-MM-AAAA) ?\n")
+		fmt.Scan(&endDate)
+
+		if msg := verif.VerifDate(startDate); msg != "ok" {
+			fmt.Println(msg)
+			continue
+		}
+
+		endResult := strings.Split(endDate, "-")
+
+		endDay, err := strconv.Atoi(endResult[0])
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		endMonth, err := strconv.Atoi(endResult[1])
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		endYear, err := strconv.Atoi(endResult[2])
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if msg := verif.IsDateLogic(endDay, endMonth, endYear); msg != "ok" {
 			fmt.Println(msg)
 			continue
 		}
 		
-		return day, month, year
+		return startDay, startMonth, startYear, endDay, endMonth, endYear
 	}
 }
 

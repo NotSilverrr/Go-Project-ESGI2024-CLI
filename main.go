@@ -22,18 +22,15 @@ func main() {
 			room.ShowAvailableRooms(connec)
 
 		case 2:
-			startContext := "de début"
-			endContext := "de fin"
+			startDay, startMonth, startYear, endDay, endMonth, endYear := time.GetDate()
+			//startHour, startMinut := time.GetTime(Context)
 
-			startDay, startMonth, startYear := time.GetDate(startContext)
-			startHour, startMinut := time.GetTime(startContext)
+			// endDay, endMonth, endYear := time.GetDate(endContext)
+			// endHour, endMinut := time.GetTime(endContext)
 
-			endDay, endMonth, endYear := time.GetDate(endContext)
-			endHour, endMinut := time.GetTime(endContext)
+			fmt.Printf("Votre réservation commencera le %02d/%02d/%02d pour [time]\n", startDay, startMonth, startYear)//startHour, startMinut
 
-			fmt.Printf("Votre réservation commencera le %02d/%02d/%02d pour %02d:%02d\n", startDay, startMonth, startYear, startHour, startMinut)
-
-			fmt.Printf("Votre réservation se terminera le %02d/%02d/%02d pour %02d:%02d\n", endDay, endMonth, endYear, endHour, endMinut)
+			fmt.Printf("Votre réservation se terminera le %02d/%02d/%02d pour [time]\n", endDay, endMonth, endYear)//endHour, endMinut
 
 		case 5:
 			fmt.Println("A plus dans le bus !")
