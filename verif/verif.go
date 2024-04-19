@@ -11,9 +11,23 @@ func VerifDate(date string) string {
 	return "ok"
 }
 
-func isDateLogic(day int, month int, year int) string{
-	monthDays := [][]int{{1, 31}, {2, 29}, {3, 31}, {4, 30}, {5, 31}, {6, 30}, {7, 31}, {8, 31}, {9, 30}, {10, 31}, {11, 30}, {12, 31}}
-	println(monthDays)
+func IsDateLogic(day int, month int, year int) string{
+	monthDays := [][]int{{1, 31}, {2, 28}, {3, 31}, {4, 30}, {5, 31}, {6, 30}, {7, 31}, {8, 31}, {9, 30}, {10, 31}, {11, 30}, {12, 31}}
+
+	//leap year
+	if year%400 == 0 || (year%4 == 0 && year % 100 != 0) {
+		monthDays[1][1] = 29
+	} 
+
+	if month < 1 || month > 12{
+		err := "Le mois choisi n'est pas valide !"
+		return err
+	}
+
+	if day < 1 || day > monthDays[month-1][1]{
+		err := "Le jour choisi n'est pas valide !"
+		return err
+	}
 	return "ok"
 }
 

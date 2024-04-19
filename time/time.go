@@ -36,6 +36,11 @@ func GetDate(context string) (int, int, int) {
 			log.Fatal(err)
 		}
 
+		if msg := verif.IsDateLogic(day, month, year); msg != "ok" {
+			fmt.Println(msg)
+			continue
+		}
+		
 		return day, month, year
 	}
 }
