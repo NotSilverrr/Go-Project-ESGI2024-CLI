@@ -1,14 +1,9 @@
 package verif
 
 import (
-	"fmt"
-	"log"
 	"regexp"
-	"strconv"
-	"strings"
 	"time"
 )
-	
 
 func VerifDate(date string) string {
 	correctDate := regexp.MustCompile(`^\d{2}-\d{2}-\d{4}$`)
@@ -57,32 +52,4 @@ func VerifTime(hour string) string {
 		return err
 	}
 	return "ok"
-}
-
-func ConvertStringToInt() (int,int,int){
-	date := ""
-	fmt.Scan(&date)
-
-
-	if msg := VerifDate(date); msg != "ok" {
-		fmt.Println(msg)
-	}
-
-	result := strings.Split(date, "-")
-
-	day, err := strconv.Atoi(result[0])
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	month, err := strconv.Atoi(result[1])
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	year, err := strconv.Atoi(result[2])
-	if err != nil {
-		log.Fatal(err)
-	}
-	return day, month, year
 }

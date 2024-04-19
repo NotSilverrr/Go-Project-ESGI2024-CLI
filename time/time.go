@@ -8,10 +8,10 @@ import (
 	"strings"
 )
 
-func GetDate() (int, int, int, int, int, int) {
+func GetBook() (int, int, int, int, int, int) {
 	for {
 		fmt.Printf("Quelle est la date de début de réservation (JJ-MM-AAAA) ?\n")
-		startDay, startMonth, startYear := verif.ConvertStringToInt()
+		startDay, startMonth, startYear := GetDate()
 
 		if msg := verif.IsDateLogic(startDay, startMonth, startYear); msg != "ok" {
 			fmt.Println(msg)
@@ -20,7 +20,7 @@ func GetDate() (int, int, int, int, int, int) {
 
 		for {
 			fmt.Printf("Quelle est la date de fin de réservation (JJ-MM-AAAA) ?\n")
-			endDay, endMonth, endYear := verif.ConvertStringToInt()
+			endDay, endMonth, endYear := GetDate()
 
 			if msg := verif.IsDateLogic(endDay, endMonth, endYear); msg != "ok" {
 				fmt.Println(msg)
@@ -57,4 +57,32 @@ func GetTime(context string) (int, int) {
 
 		return hour, minut
 	}
+}
+
+func GetDate() (int,int,int){
+	date := ""
+	fmt.Scan(&date)
+
+
+	if msg := verif.VerifDate(date); msg != "ok" {
+		fmt.Println(msg)
+	}
+
+	result := strings.Split(date, "-")
+
+	day, err := strconv.Atoi(result[0])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	month, err := strconv.Atoi(result[1])
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	year, err := strconv.Atoi(result[2])
+	if err != nil {
+		log.Fatal(err)
+	}
+	return day, month, year
 }

@@ -22,8 +22,8 @@ func main() {
 			room.ShowAvailableRooms(connec)
 
 		case 2:
-			startDay, startMonth, startYear, endDay, endMonth, endYear := time.GetDate()
-			//startHour, startMinut := time.GetTime(Context)
+			startDay, startMonth, startYear, endDay, endMonth, endYear := time.GetBook()
+			//startHour, startMinut := time.GetTime()
 
 			// endDay, endMonth, endYear := time.GetDate(endContext)
 			// endHour, endMinut := time.GetTime(endContext)
