@@ -9,69 +9,68 @@ import (
 )
 
 func GetBook() (int, int, int, int, int, int, int, int, int, int) {
-    startContext := "de début"
-    endContext := "de fin"
+  startContext := "de début"
+  endContext := "de fin"
 
-    for {
-        startDay, startMonth, startYear := GetDate(startContext)
+  for {
+    startDay, startMonth, startYear := GetDate(startContext)
 
-        // Error in Day/Month number
-        if msg := verif.IsDateLogic(startDay, startMonth, startYear); msg != "ok" {
-            fmt.Println(msg)
-            continue
-        }
-        
-        // Error if Day in the past
-        if msg := verif.IsDayInPast(startDay, startMonth, startYear); msg != "ok" {
-            fmt.Println(msg)
-            continue
-        }
-        
-        for {
-            startHour, startMinute := GetTime(startContext)
-
-            // Error in Hour/Minute number
-            if msg := verif.IsTimeLogic(startHour, startMinute); msg != "ok" {
-                fmt.Println(msg)
-                continue
-            }
-
-						for{
-
-							endDay, endMonth, endYear := GetDate(endContext)
-							
-							// Error in Day/Month number
-							if msg := verif.IsDateLogic(endDay, endMonth, endYear); msg != "ok" {
-									fmt.Println(msg)
-									continue
-							}
-	
-							// Error if Day in the past
-							if msg := verif.IsDayInPast(endDay, endMonth, endYear); msg != "ok" {
-									fmt.Println(msg)
-									continue
-							}
-							
-							for {
-									endHour, endMinute := GetTime(endContext)
-	
-									// Error in Hour/Minute number
-									if msg := verif.IsTimeLogic(endHour, endMinute); msg != "ok" {
-											fmt.Println(msg)
-											continue
-									}
-	
-									// Error if end time is before start time
-									if msg := verif.IsBookingLogic(startDay, startMonth, startYear, startHour, startMinute, endDay, endMonth, endYear, endHour, endMinute); msg != "ok" {
-											fmt.Println(msg)
-											continue
-									}
-	
-									return startDay, startMonth, startYear, startHour, startMinute, endDay, endMonth, endYear, endHour, endMinute
-								}
-						}
-        }
+    // Error in Day/Month number
+    if msg := verif.IsDateLogic(startDay, startMonth, startYear); msg != "ok" {
+      fmt.Println(msg)
+      continue
     }
+        
+    // Error if Day in the past
+    if msg := verif.IsDayInPast(startDay, startMonth, startYear); msg != "ok" {
+      fmt.Println(msg)
+      continue
+    }
+        
+    for {
+      startHour, startMinute := GetTime(startContext)
+
+      // Error in Hour/Minute number
+      if msg := verif.IsTimeLogic(startHour, startMinute); msg != "ok" {
+        fmt.Println(msg)
+        continue
+      }
+
+			for{
+				endDay, endMonth, endYear := GetDate(endContext)
+							
+				// Error in Day/Month number
+				if msg := verif.IsDateLogic(endDay, endMonth, endYear); msg != "ok" {
+					fmt.Println(msg)
+					continue
+				}
+	
+				// Error if Day in the past
+				if msg := verif.IsDayInPast(endDay, endMonth, endYear); msg != "ok" {
+					fmt.Println(msg)
+					continue
+				}
+							
+				for {
+					endHour, endMinute := GetTime(endContext)
+	
+					// Error in Hour/Minute number
+					if msg := verif.IsTimeLogic(endHour, endMinute); msg != "ok" {
+						fmt.Println(msg)
+						continue
+					}
+	
+					// Error if end time is before start time
+					if msg := verif.IsBookingLogic(startDay, startMonth, startYear, startHour, startMinute, endDay, endMonth, endYear, endHour, endMinute); msg != "ok" {
+						fmt.Println(msg)
+						continue
+					}
+	
+					return startDay, startMonth, startYear, startHour, startMinute, endDay, endMonth, endYear, endHour, endMinute
+				}
+			}
+    }
+  }
 }
 
 func GetDate(dayContext string) (int,int,int){
