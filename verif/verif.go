@@ -1,6 +1,7 @@
 package verif
 
 import (
+	"fmt"
 	"regexp"
 	"time"
 )
@@ -8,8 +9,7 @@ import (
 func VerifDate(date string) string {
 	correctDate := regexp.MustCompile(`^\d{2}-\d{2}-\d{4}$`)
 	if !correctDate.MatchString(date) {
-		err := "\033[31mFormat de date invalide. Veuillez entrer une date au format JJ-MM-AAAA.\033[0m"
-		return err
+		return "\033[31mFormat de date invalide. Veuillez entrer une date au format JJ-MM-AAAA.\033[0m"
 	}
 	return "ok"
 }
@@ -23,35 +23,45 @@ func IsDateLogic(day, month, year int) string {
 	} 
 
 	if month < 1 || month > 12{
-		err := "\033[31mLe mois choisi n'est pas valide !\033[0m"
-		return err
+		return "\033[31mLe mois choisi n'est pas valide !\033[0m"
 	}
 
 	if day < 1 || day > monthDays[month-1][1]{
-		err := "\033[31mLe jour choisi n'est pas valide !\033[0m"
-		return err
+		return "\033[31mLe jour choisi n'est pas valide !\033[0m"
 	}
 	return "ok"
 }
 
-func IsBookingDayInPast(startDay, startMonth, startYear int) string {
+func IsDayInPast(startDay, startMonth, startYear int) string {
 	currentDate := time.Now().UTC()
 	startDate := time.Date(startYear, time.Month(startMonth), startDay, 0, 0, 0, 0, time.UTC)
-
+	nextDate := currentDate.AddDate(0, 0, 1)
+	
 	if startDate.Before(currentDate) {
-		err := "\033[31mLa date de début de réservation ne peut pas être dans le passé.\033[0m"
+		err := fmt.Sprintf("\033[31mLes réservations sont ouvertes à partir du %s.\033[0m", nextDate.Format("02-01-2006"))
 		return err
 	}
 	return "ok"
 }
 
-func IsBookingLogic(startDay, startMonth, startYear, endDay, endMonth, endYear int) string {
-	startDate := time.Date(startYear, time.Month(startMonth), startDay, 0, 0, 0, 0, time.UTC)
-  endDate := time.Date(endYear, time.Month(endMonth), endDay, 0, 0, 0, 0, time.UTC)
+func IsDateInPast(startDay, startMonth, startYear, startHour, startMinut int) string {
+	currentDate := time.Now().UTC()
+	startDate := time.Date(startYear, time.Month(startMonth), startDay, startHour, startMinut, 0, 0, time.UTC)
+	nextDate := currentDate.AddDate(0, 0, 1)
+
+	if startDate.Before(currentDate) {
+		err := fmt.Sprintf("\033[31mLes réservations sont ouvertes à partir du %s.\033[0m", nextDate.Format("02-01-2006"))
+		return err
+	}
+	return "ok"
+}
+
+func IsBookingLogic(startDay, startMonth, startYear, startHour, startMinut, endDay, endMonth, endYear, endHour, endMinut int) string {
+	startDate := time.Date(startYear, time.Month(startMonth), startDay, startHour, startMinut, 0, 0, time.UTC)
+  endDate := time.Date(endYear, time.Month(endMonth), endDay, endHour, endMinut, 0, 0, time.UTC)
 
 	if endDate.Before(startDate) {
-		err := "\033[31mLa date de fin ne peut pas être antérieure à la date de début.\033[0m"
-		return err
+		return "\033[31mLa date de fin ne peut pas être antérieure à la date de début.\033[0m"
 	}
 	return "ok"
 }
@@ -59,8 +69,17 @@ func IsBookingLogic(startDay, startMonth, startYear, endDay, endMonth, endYear i
 func VerifTime(hour string) string {
 	correctHour := regexp.MustCompile(`^\d{2}:\d{2}$`)
 	if !correctHour.MatchString(hour) {
-		err := "\033[31mFormat d'heure invalide. Veuillez entrer une heure au format HH:MM.\033[0m"
-		return err
+		return "\033[31mFormat d'heure invalide. Veuillez entrer une heure au format HH:MM.\033[0m"
+	}
+	return "ok"
+}
+
+func IsTimeLogic(hour, minute int) string {
+	if hour < 0 || hour > 23 {
+		return "\033[31mL'heure doit être comprise entre 0 et 23.\033[0m"
+	}
+	if minute < 0 || minute > 59 {
+		return "\033[31mLes minutes doivent être comprises entre 0 et 59.\033[0m"
 	}
 	return "ok"
 }
@@ -70,8 +89,7 @@ func IsBookingTimeInPast(hour, minute int) string {
 	bookingTime := time.Date(currentTime.Year(), currentTime.Month(), currentTime.Day(), hour, minute, 0, 0, time.UTC)
 
 	if bookingTime.Before(currentTime) {
-		err := "\033[31mL'heure de réservation ne peut pas être dans le passé.\033[0m"
-		return err
+		return "\033[31mL'heure de réservation ne peut pas être dans le passé.\033[0m"
 	}
 	return "ok"
 }
