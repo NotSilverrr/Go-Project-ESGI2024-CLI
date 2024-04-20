@@ -40,15 +40,29 @@ func main() {
 }
 
 func displayMenu() int {
-	fmt.Println("-----------------------------------------------------------")
-	fmt.Println("1. Lister les salles disponibles")
-	fmt.Println("2. Créer une réservation")
-	fmt.Println("3. Annuler une réservation")
-	fmt.Println("4. Visualiser les réservations")
-	fmt.Println("5. Quitter")
-	fmt.Println("")
-	fmt.Println("Choisissez une option : ")
-	var choice int
-	fmt.Scan(&choice)
-	return choice
+	for {
+		fmt.Println("-----------------------------------------------------------")
+		fmt.Println("1. Lister les salles disponibles")
+		fmt.Println("2. Créer une réservation")
+		fmt.Println("3. Annuler une réservation")
+		fmt.Println("4. Visualiser les réservations")
+		fmt.Println("5. Quitter")
+		fmt.Println("")
+		fmt.Println("Choisissez une option : ")
+		var choice int
+		fmt.Scan(&choice)
+
+		if msg := correctChoice(choice); msg != "ok" {
+      fmt.Println(msg)
+      continue
+  	}
+		return choice
+	}
+}
+
+func correctChoice(choice int) string {
+if choice < 1 || choice > 5 {
+      return "\033[31mVeuillez choisir une option valide (entre 1 et 5).\033[0m"
+    }
+    return "ok"
 }
