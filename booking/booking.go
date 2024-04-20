@@ -1,10 +1,10 @@
 package booking
 
 import (
+	verif "Go-Project-ESGI2024-CLI/verif"
 	"database/sql"
 	"fmt"
 	"log"
-	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -17,7 +17,7 @@ type booking struct {
 }
 
 func CreateReservation(idSalle int, dstart int, dend int, hstart int, hend int, db *sql.DB) {
-	verif := VerifResa(idSalle, dstart, dend, hstart, hend, db)
+	verif := verif.VerifResa(idSalle, dstart, dend, hstart, hend, db)
 	if verif != "ok" {
 		println(verif)
 	}
@@ -31,70 +31,6 @@ func CreateReservation(idSalle int, dstart int, dend int, hstart int, hend int, 
 		log.Fatal(err)
 	}
 	println("Votre réservation a bien été validé")
-}
-
-func VerifResa(roomID int, dstart int, dend int, hstart int, hend int, db *sql.DB) string {
-	var datestart string
-	var dateend string
-	var timestart string
-	var timeend string
-
-	datestartint, err := strconv.Atoi(datestart)
-	dateendint, err := strconv.Atoi(dateend)
-	timestartint, err := strconv.Atoi(timestart)
-	timeendint, err := strconv.Atoi(timeend)
-
-	rows, err := db.Query("Select id,date_start,date_end,time_start,time_end FROM reservation WHERE id_salle=?", roomID)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for rows.Next() {
-		err = rows.Scan(&datestart, &dateend, &timestart, &timeend)
-
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		if dstart >= datestartint || dstart <= dateendint && dstart >= datestartint {
-			dstartstr := strconv.Itoa(dstart)
-			return "Cette salle n'est pas disponible le" + dstartstr
-		}
-		if dstart == datestartint {
-			if dstart != dateendint {
-				if hstart > timestartint {
-					hstartstr := strconv.Itoa(hstart)
-					return "Cette salle n'est pas disponible a" + hstartstr
-				}
-			} else {
-				if hstart > timestartint && hstart < timeendint {
-					hstartstr := strconv.Itoa(hstart)
-					return "Cette salle n'est pas disponible a" + hstartstr
-				}
-			}
-		}
-
-		if dend >= datestartint || dend <= dateendint && dend > datestartint {
-			dendstr := strconv.Itoa(dend)
-			return "Cette salle n'est pas disponible le" + dendstr
-		}
-		if dend == datestartint {
-			if dend != dateendint {
-				if hend > timestartint {
-					hendstr := strconv.Itoa(hend)
-					return "Cette salle n'est pas disponible a" + hendstr
-				}
-			} else {
-				if hend > timestartint && hend < timeendint {
-					hendstr := strconv.Itoa(hend)
-					return "Cette salle n'est pas disponible a" + hendstr
-				}
-			}
-		}
-
-	}
-	return "ok"
 }
 
 func CancelReservation(id int, db *sql.DB) {
