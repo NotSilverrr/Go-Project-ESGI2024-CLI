@@ -44,18 +44,6 @@ func IsDayInPast(startDay, startMonth, startYear int) string {
 	return "ok"
 }
 
-func IsDateInPast(startDay, startMonth, startYear, startHour, startMinut int) string {
-	currentDate := time.Now().UTC()
-	startDate := time.Date(startYear, time.Month(startMonth), startDay, startHour, startMinut, 0, 0, time.UTC)
-	nextDate := currentDate.AddDate(0, 0, 1)
-
-	if startDate.Before(currentDate) {
-		err := fmt.Sprintf("\033[31mLes réservations sont ouvertes à partir du %s.\033[0m", nextDate.Format("02-01-2006"))
-		return err
-	}
-	return "ok"
-}
-
 func IsBookingLogic(startDay, startMonth, startYear, startHour, startMinut, endDay, endMonth, endYear, endHour, endMinut int) string {
 	startDate := time.Date(startYear, time.Month(startMonth), startDay, startHour, startMinut, 0, 0, time.UTC)
   endDate := time.Date(endYear, time.Month(endMonth), endDay, endHour, endMinut, 0, 0, time.UTC)

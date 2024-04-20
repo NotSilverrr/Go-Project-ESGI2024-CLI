@@ -13,7 +13,7 @@ func GetBook() (int, int, int, int, int, int, int, int, int, int) {
   endContext := "de fin"
 
   for {
-    startDay, startMonth, startYear := GetDate(startContext)
+    startDay, startMonth, startYear := getDate(startContext)
 
     // Error in Day/Month number
     if msg := verif.IsDateLogic(startDay, startMonth, startYear); msg != "ok" {
@@ -28,7 +28,7 @@ func GetBook() (int, int, int, int, int, int, int, int, int, int) {
     }
         
     for {
-      startHour, startMinute := GetTime(startContext)
+      startHour, startMinute := getTime(startContext)
 
       // Error in Hour/Minute number
       if msg := verif.IsTimeLogic(startHour, startMinute); msg != "ok" {
@@ -37,7 +37,7 @@ func GetBook() (int, int, int, int, int, int, int, int, int, int) {
       }
 
 			for{
-				endDay, endMonth, endYear := GetDate(endContext)
+				endDay, endMonth, endYear := getDate(endContext)
 							
 				// Error in Day/Month number
 				if msg := verif.IsDateLogic(endDay, endMonth, endYear); msg != "ok" {
@@ -52,7 +52,7 @@ func GetBook() (int, int, int, int, int, int, int, int, int, int) {
 				}
 							
 				for {
-					endHour, endMinute := GetTime(endContext)
+					endHour, endMinute := getTime(endContext)
 	
 					// Error in Hour/Minute number
 					if msg := verif.IsTimeLogic(endHour, endMinute); msg != "ok" {
@@ -73,7 +73,7 @@ func GetBook() (int, int, int, int, int, int, int, int, int, int) {
   }
 }
 
-func GetDate(dayContext string) (int,int,int){
+func getDate(dayContext string) (int,int,int){
 	for {
 		date := ""
 		fmt.Printf("Quelle est la date %s de réservation (JJ-MM-AAAA) ?\n", dayContext)
@@ -104,7 +104,7 @@ func GetDate(dayContext string) (int,int,int){
 	}
 }
 
-func GetTime(context string) (int, int) {
+func getTime(context string) (int, int) {
 	for {
 		time := ""
 		fmt.Printf("Quelle est l'heure %s de réservation (HH:MM) ?\n", context)
