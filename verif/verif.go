@@ -64,3 +64,14 @@ func VerifTime(hour string) string {
 	}
 	return "ok"
 }
+
+func IsBookingTimeInPast(hour, minute int) string {
+	currentTime := time.Now().UTC()
+	bookingTime := time.Date(currentTime.Year(), currentTime.Month(), currentTime.Day(), hour, minute, 0, 0, time.UTC)
+
+	if bookingTime.Before(currentTime) {
+		err := "\033[31mL'heure de réservation ne peut pas être dans le passé.\033[0m"
+		return err
+	}
+	return "ok"
+}
