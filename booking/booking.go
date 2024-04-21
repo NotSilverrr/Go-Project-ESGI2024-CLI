@@ -72,38 +72,31 @@ func CancelReservation(db *sql.DB) {
 }
 
 func DisplayReservation(roomID int, db *sql.DB) {
-	var name string
-	var id string
-	var datestart string
-	var dateend string
-	var timestart string
-	var timeend string
-
-	rows, err := db.Query("Select id,date_start,date_end,time_start,time_end FROM reservation WHERE id_salle=?", roomID)
-
+	// Get room name
+	var roomName string
+	
+	err := db.QueryRow("SELECT name FROM room WHERE id = ?", roomID).Scan(&roomName)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	rowsRoom, err := db.Query("Select name FROM room WHERE id=?", roomID)
+	println("Réservations pour", roomName)
 
+	// Get room reservations
+	rows, err := db.Query("SELECT id, date_start, date_end, time_start, time_end FROM reservation WHERE id_salle = ?", roomID)
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer rows.Close()
 
-	err = rows.Scan(&name)
-	if err != nil {
-		log.Fatal(err)
-	}
-	println("Réservations pour ", name)
 	for rows.Next() {
-		err = rowsRoom.Scan(&id, &datestart, &dateend, &timestart, &timeend)
-
+		var id int
+		var datestart, dateend, timestart, timeend string
+		err := rows.Scan(&id, &datestart, &dateend, &timestart, &timeend)
 		if err != nil {
 			log.Fatal(err)
 		}
-
 		println(id, ".", datestart, timestart, " - ", dateend, timeend)
 	}
-
 }
+
