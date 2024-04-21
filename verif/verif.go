@@ -153,7 +153,7 @@ func VerifIDRoom(id string, db *sql.DB) string {
 	idRoom, err := strconv.Atoi(id)
 
 	if err != nil {
-		fmt.Printf("L'id de la salle doit etre un chiffre\n")
+		fmt.Printf("\033[31mL'id de la salle doit etre un chiffre\n \033[0m")
 		return "pasOK"
 	}
 
@@ -179,7 +179,7 @@ func VerifIDRoom(id string, db *sql.DB) string {
 	if verif == 1 {
 		return "ok"
 	} else {
-		fmt.Printf("La salle %d n'existe pas\n", idRoom)
+		fmt.Printf("\033[31mLa salle %d n'existe pas\n \033[0m", idRoom)
 		return "pasOK"
 	}
 
