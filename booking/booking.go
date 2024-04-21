@@ -1,6 +1,7 @@
 package booking
 
 import (
+	room "Go-Project-ESGI2024-CLI/room"
 	time "Go-Project-ESGI2024-CLI/time"
 	"database/sql"
 	"fmt"
@@ -19,6 +20,7 @@ type booking struct {
 
 func FormReservation(db *sql.DB) (int, int, int, int, int, int, int, int, int, int) {
 	var roomID int
+	room.DisplayRooms(db)
 	fmt.Printf("Quelle salle voulez vous réserver?\n")
 	fmt.Scan(&roomID)
 	startDay, startMonth, startYear, startHour, startMinute, endDay, endMonth, endYear, endHour, endMinute := time.GetBook()
