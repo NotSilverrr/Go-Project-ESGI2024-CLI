@@ -31,6 +31,8 @@ func main() {
 
 			fmt.Printf("Votre réservation se terminera le %02d/%02d/%02d pour %02d:%02d\n", endDay, endMonth, endYear, endHour, endMinut)
 
+		case 3:
+			book.CancelReservation(connec)
 		case 5:
 			fmt.Println("A plus dans le bus !")
 			db.Db_closer(connec)

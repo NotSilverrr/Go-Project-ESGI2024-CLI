@@ -19,7 +19,7 @@ type booking struct {
 
 func FormReservation(db *sql.DB) (int, int, int, int, int, int, int, int, int, int) {
 	var roomID int
-	fmt.Printf("Quelle salle voulez vous réserver??\n")
+	fmt.Printf("Quelle salle voulez vous réserver?\n")
 	fmt.Scan(&roomID)
 	startDay, startMonth, startYear, startHour, startMinute, endDay, endMonth, endYear, endHour, endMinute := time.GetBook()
 
@@ -55,13 +55,18 @@ func CreateReservation(idSalle int, dstart string, dend string, hstart string, h
 	println("Votre réservation a bien été validé")
 }
 
-func CancelReservation(id int, db *sql.DB) {
-	res, err := db.Exec("DELETE FROM reservation WHERE id_salle=?", id)
+func CancelReservation(db *sql.DB) {
+	var resID int
+	fmt.Printf("Quelle réservation voulez vous annuler?\n")
+	fmt.Scan(&resID)
+
+	res, err := db.Exec("DELETE FROM reservation WHERE id=?", resID)
 
 	if err != nil {
 		println(res)
 		log.Fatal(err)
 	}
+	fmt.Printf("La réservation %d a bien été annulé.\n", resID)
 }
 
 func DisplayReservation(roomID int, db *sql.DB) {
