@@ -1,9 +1,9 @@
 package main
 
 import (
+	book "Go-Project-ESGI2024-CLI/booking"
 	db "Go-Project-ESGI2024-CLI/db"
 	room "Go-Project-ESGI2024-CLI/room"
-	time "Go-Project-ESGI2024-CLI/time"
 
 	"fmt"
 
@@ -22,10 +22,10 @@ func main() {
 			room.ShowAvailableRooms(connec)
 
 		case 2:
-			startDay, startMonth, startYear, 
-			startHour, startMinut, 
-			endDay, endMonth, endYear,
-			endHour, endMinut := time.GetBook()
+			startDay, startMonth, startYear,
+				startHour, startMinut,
+				endDay, endMonth, endYear,
+				endHour, endMinut := book.FormReservation(connec)
 
 			fmt.Printf("Votre réservation commencera le %02d/%02d/%02d pour %02d:%02d\n", startDay, startMonth, startYear, startHour, startMinut)
 
@@ -40,6 +40,7 @@ func main() {
 }
 
 func displayMenu() int {
+
 	for {
 		fmt.Println("-----------------------------------------------------------")
 		fmt.Println("1. Lister les salles disponibles")
@@ -53,16 +54,16 @@ func displayMenu() int {
 		fmt.Scan(&choice)
 
 		if msg := correctChoice(choice); msg != "ok" {
-      fmt.Println(msg)
-      continue
-  	}
+			fmt.Println(msg)
+			continue
+		}
 		return choice
 	}
 }
 
 func correctChoice(choice int) string {
-if choice < 1 || choice > 5 {
-      return "\033[31mVeuillez choisir une option valide (entre 1 et 5).\033[0m"
-    }
-    return "ok"
+	if choice < 1 || choice > 5 {
+		return "\033[31mVeuillez choisir une option valide (entre 1 et 5).\033[0m"
+	}
+	return "ok"
 }
