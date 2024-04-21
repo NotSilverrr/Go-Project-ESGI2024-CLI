@@ -21,15 +21,15 @@ func IsDateLogic(day, month, year int) string {
 	monthDays := [][]int{{1, 31}, {2, 28}, {3, 31}, {4, 30}, {5, 31}, {6, 30}, {7, 31}, {8, 31}, {9, 30}, {10, 31}, {11, 30}, {12, 31}}
 
 	//leap year
-	if year%400 == 0 || (year%4 == 0 && year % 100 != 0) {
+	if year%400 == 0 || (year%4 == 0 && year%100 != 0) {
 		monthDays[1][1] = 29
-	} 
+	}
 
-	if month < 1 || month > 12{
+	if month < 1 || month > 12 {
 		return "\033[31mLe mois choisi n'est pas valide !\033[0m"
 	}
 
-	if day < 1 || day > monthDays[month-1][1]{
+	if day < 1 || day > monthDays[month-1][1] {
 		return "\033[31mLe jour choisi n'est pas valide !\033[0m"
 	}
 	return "ok"
@@ -39,7 +39,7 @@ func IsDayInPast(startDay, startMonth, startYear int) string {
 	currentDate := time.Now().UTC()
 	startDate := time.Date(startYear, time.Month(startMonth), startDay, 0, 0, 0, 0, time.UTC)
 	nextDate := currentDate.AddDate(0, 0, 1)
-	
+
 	if startDate.Before(currentDate) {
 		err := fmt.Sprintf("\033[31mLes réservations sont ouvertes à partir du %s.\033[0m", nextDate.Format("02-01-2006"))
 		return err
@@ -49,7 +49,7 @@ func IsDayInPast(startDay, startMonth, startYear int) string {
 
 func IsBookingLogic(startDay, startMonth, startYear, startHour, startMinut, endDay, endMonth, endYear, endHour, endMinut int) string {
 	startDate := time.Date(startYear, time.Month(startMonth), startDay, startHour, startMinut, 0, 0, time.UTC)
-  endDate := time.Date(endYear, time.Month(endMonth), endDay, endHour, endMinut, 0, 0, time.UTC)
+	endDate := time.Date(endYear, time.Month(endMonth), endDay, endHour, endMinut, 0, 0, time.UTC)
 
 	if endDate.Before(startDate) {
 		return "\033[31mLa date de fin ne peut pas être antérieure à la date de début.\033[0m"
@@ -85,17 +85,16 @@ func IsBookingTimeInPast(hour, minute int) string {
 	return "ok"
 }
 
-
 func VerifResa(roomID int, dstart int, dend int, hstart int, hend int, db *sql.DB) string {
 	var datestart string
 	var dateend string
 	var timestart string
 	var timeend string
 
-	datestartint, err := strconv.Atoi(datestart)
-	dateendint, err := strconv.Atoi(dateend)
-	timestartint, err := strconv.Atoi(timestart)
-	timeendint, err := strconv.Atoi(timeend)
+	datestartint, _ := strconv.Atoi(datestart)
+	dateendint, _ := strconv.Atoi(dateend)
+	timestartint, _ := strconv.Atoi(timestart)
+	timeendint, _ := strconv.Atoi(timeend)
 
 	rows, err := db.Query("Select id,date_start,date_end,time_start,time_end FROM reservation WHERE id_salle=?", roomID)
 
@@ -148,4 +147,40 @@ func VerifResa(roomID int, dstart int, dend int, hstart int, hend int, db *sql.D
 
 	}
 	return "ok"
+}
+
+func VerifIDRoom(id string, db *sql.DB) string {
+	idRoom, err := strconv.Atoi(id)
+
+	if err != nil {
+		fmt.Printf("L'id de la salle doit etre un chiffre\n")
+		return "pasOK"
+	}
+
+	var verif int = 0
+	rows, err := db.Query("Select id from room")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var idDB int
+		if err := rows.Scan(&idDB); err != nil {
+			log.Fatal(err)
+		}
+		if idDB == idRoom {
+			verif = 1
+		}
+	}
+
+	if verif == 1 {
+		return "ok"
+	} else {
+		fmt.Printf("La salle %d n'existe pas\n", idRoom)
+		return "pasOK"
+	}
+
 }

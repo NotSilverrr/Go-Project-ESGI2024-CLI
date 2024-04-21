@@ -33,7 +33,7 @@ func main() {
 
 		case 3:
 			book.CancelReservation(connec)
-		
+
 		case 4:
 			fmt.Println("Quelle salle souhaitez vous visualiser ?")
 			fmt.Scan(&choice)

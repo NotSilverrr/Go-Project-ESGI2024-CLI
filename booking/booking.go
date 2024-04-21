@@ -3,6 +3,7 @@ package booking
 import (
 	room "Go-Project-ESGI2024-CLI/room"
 	time "Go-Project-ESGI2024-CLI/time"
+	"Go-Project-ESGI2024-CLI/verif"
 	"database/sql"
 	"fmt"
 	"log"
@@ -19,10 +20,21 @@ type booking struct {
 }
 
 func FormReservation(db *sql.DB) (int, int, int, int, int, int, int, int, int, int) {
+	var ID string
 	var roomID int
+	roomVerif := "pasOK"
 	room.DisplayRooms(db)
-	fmt.Printf("Quelle salle voulez vous réserver?\n")
-	fmt.Scan(&roomID)
+	for roomVerif != "ok" {
+		fmt.Printf("Quelle salle voulez vous réserver?\n")
+		fmt.Scan(&ID)
+		roomVerif = verif.VerifIDRoom(ID, db)
+	}
+	roomID, err := strconv.Atoi(ID)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	startDay, startMonth, startYear, startHour, startMinute, endDay, endMonth, endYear, endHour, endMinute := time.GetBook()
 
 	startDayStr := strconv.Itoa(startDay)
@@ -74,7 +86,7 @@ func CancelReservation(db *sql.DB) {
 func DisplayReservation(roomID int, db *sql.DB) {
 	// Get room name
 	var roomName string
-	
+
 	err := db.QueryRow("SELECT name FROM room WHERE id = ?", roomID).Scan(&roomName)
 	if err != nil {
 		log.Fatal(err)
@@ -99,4 +111,3 @@ func DisplayReservation(roomID int, db *sql.DB) {
 		println(id, ".", datestart, timestart, " - ", dateend, timeend)
 	}
 }
-

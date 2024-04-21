@@ -54,6 +54,6 @@ func DisplayRooms(db *sql.DB) {
 		if err := rows.Scan(&id, &name); err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("%s. %s", id, name)
+		fmt.Printf("%s. %s\n", id, name)
 	}
 }
