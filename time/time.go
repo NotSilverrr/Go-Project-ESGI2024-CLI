@@ -50,6 +50,12 @@ func GetBook() (int, int, int, int, int, int, int, int, int, int) {
 					fmt.Println(msg)
 					continue
 				}
+
+				// Error if end day is before the start day
+				if msg := verif.IsEndDayBeforeStart(startDay, startMonth, startYear, endDay, endMonth, endYear); msg != "ok" {
+					fmt.Println(msg)
+					continue
+				}
 							
 				for {
 					endHour, endMinute := getTime(endContext)

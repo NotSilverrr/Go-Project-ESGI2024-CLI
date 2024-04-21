@@ -47,6 +47,16 @@ func IsDayInPast(startDay, startMonth, startYear int) string {
 	return "ok"
 }
 
+func IsEndDayBeforeStart(startDay, startMonth, startYear, endDay, endMonth, endYear int) string {
+	startDate := time.Date(startYear, time.Month(startMonth), startDay, 0, 0, 0, 0, time.UTC)
+	endDate := time.Date(endYear, time.Month(endMonth), endDay, 0, 0, 0, 0, time.UTC)
+
+	if endDate.Before(startDate) {
+		return "\033[31mLa date de fin ne peut pas être antérieure à la date de début.\033[0m"
+	}
+	return "ok"
+}
+
 func IsBookingLogic(startDay, startMonth, startYear, startHour, startMinut, endDay, endMonth, endYear, endHour, endMinut int) string {
 	startDate := time.Date(startYear, time.Month(startMonth), startDay, startHour, startMinut, 0, 0, time.UTC)
 	endDate := time.Date(endYear, time.Month(endMonth), endDay, endHour, endMinut, 0, 0, time.UTC)
@@ -54,6 +64,12 @@ func IsBookingLogic(startDay, startMonth, startYear, startHour, startMinut, endD
 	if endDate.Before(startDate) {
 		return "\033[31mLa date de fin ne peut pas être antérieure à la date de début.\033[0m"
 	}
+	
+	if endDate.Equal(startDate) && endHour == startHour && endMinut == startMinut {
+		return "\033[31mT'es bête ?\033[0m"
+	}
+
+	
 	return "ok"
 }
 
@@ -153,7 +169,7 @@ func VerifIDRoom(id string, db *sql.DB) string {
 	idRoom, err := strconv.Atoi(id)
 
 	if err != nil {
-		fmt.Printf("\033[31mL'id de la salle doit etre un chiffre\n \033[0m")
+		fmt.Printf("\033[31mL'id de la salle doit etre un chiffre\n\033[0m")
 		return "pasOK"
 	}
 
@@ -179,7 +195,7 @@ func VerifIDRoom(id string, db *sql.DB) string {
 	if verif == 1 {
 		return "ok"
 	} else {
-		fmt.Printf("\033[31mLa salle %d n'existe pas\n \033[0m", idRoom)
+		fmt.Printf("\033[31mLa salle %d n'existe pas\n\033[0m", idRoom)
 		return "pasOK"
 	}
 

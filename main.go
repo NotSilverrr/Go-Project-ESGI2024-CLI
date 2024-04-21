@@ -4,6 +4,9 @@ import (
 	book "Go-Project-ESGI2024-CLI/booking"
 	db "Go-Project-ESGI2024-CLI/db"
 	room "Go-Project-ESGI2024-CLI/room"
+	"Go-Project-ESGI2024-CLI/verif"
+	"log"
+	"strconv"
 
 	"fmt"
 
@@ -27,17 +30,32 @@ func main() {
 				endDay, endMonth, endYear,
 				endHour, endMinut := book.FormReservation(connec)
 
-			fmt.Printf("Votre réservation commencera le %02d/%02d/%02d pour %02d:%02d\n", startDay, startMonth, startYear, startHour, startMinut)
+			fmt.Printf("Elle commencera le %02d/%02d/%02d pour %02d:%02d\n", startDay, startMonth, startYear, startHour, startMinut)
 
-			fmt.Printf("Votre réservation se terminera le %02d/%02d/%02d pour %02d:%02d\n", endDay, endMonth, endYear, endHour, endMinut)
+			fmt.Printf("Elle se terminera le %02d/%02d/%02d pour %02d:%02d\n", endDay, endMonth, endYear, endHour, endMinut)
 
 		case 3:
 			book.CancelReservation(connec)
 
-		case 4:
-			fmt.Println("Quelle salle souhaitez vous visualiser ?")
-			fmt.Scan(&choice)
-			book.DisplayReservation(choice, connec)
+		case 4:	
+			var ID string
+			roomVerif := "pasOK"
+
+			room.DisplayRooms(connec)
+
+			for roomVerif != "ok" {
+				fmt.Println("Quelle salle voulez-vous visualiser ?")
+				fmt.Scan(&ID)
+				roomVerif = verif.VerifIDRoom(ID, connec)
+			}
+
+			intID, err := strconv.Atoi(ID)
+			if err != nil {
+				log.Fatal(err)
+			}
+		
+			book.DisplayReservation(intID, connec)
+			
 		case 5:
 			fmt.Println("A plus dans le bus !")
 			db.Db_closer(connec)
