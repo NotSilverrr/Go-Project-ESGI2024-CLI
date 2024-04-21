@@ -33,6 +33,11 @@ func main() {
 
 		case 3:
 			book.CancelReservation(connec)
+		
+		case 4:
+			fmt.Println("Quelle salle souhaitez vous visualiser ?")
+			fmt.Scan(&choice)
+			book.DisplayReservation(choice, connec)
 		case 5:
 			fmt.Println("A plus dans le bus !")
 			db.Db_closer(connec)
