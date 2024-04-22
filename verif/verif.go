@@ -6,6 +6,7 @@ import (
 	"log"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -64,12 +65,11 @@ func IsBookingLogic(startDay, startMonth, startYear, startHour, startMinut, endD
 	if endDate.Before(startDate) {
 		return "\033[31mLa date de fin ne peut pas être antérieure à la date de début.\033[0m"
 	}
-	
+
 	if endDate.Equal(startDate) && endHour == startHour && endMinut == startMinut {
 		return "\033[31mT'es bête ?\033[0m"
 	}
 
-	
 	return "ok"
 }
 
@@ -101,18 +101,16 @@ func IsBookingTimeInPast(hour, minute int) string {
 	return "ok"
 }
 
-func VerifResa(roomID int, dstart int, dend int, hstart int, hend int, db *sql.DB) string {
+func VerifResa(roomID int, ystart int, yend int, mstart int, mend int, dstart int, dend int, hstart int, hend int, minstart int, minend int, db *sql.DB) string {
 	var datestart string
 	var dateend string
 	var timestart string
 	var timeend string
 
-	datestartint, _ := strconv.Atoi(datestart)
-	dateendint, _ := strconv.Atoi(dateend)
-	timestartint, _ := strconv.Atoi(timestart)
-	timeendint, _ := strconv.Atoi(timeend)
+	datestartDATE := time.Date(ystart, time.Month(mstart), dstart, hstart, mstart, 0, 0, time.UTC)
+	dateendDATE := time.Date(yend, time.Month(mend), dend, hend, minend, 0, 0, time.UTC)
 
-	rows, err := db.Query("Select id,date_start,date_end,time_start,time_end FROM reservation WHERE id_salle=?", roomID)
+	rows, err := db.Query("Select date_start,date_end,time_start,time_end FROM reservation WHERE id_salle=?", roomID)
 
 	if err != nil {
 		log.Fatal(err)
@@ -125,40 +123,30 @@ func VerifResa(roomID int, dstart int, dend int, hstart int, hend int, db *sql.D
 			log.Fatal(err)
 		}
 
-		if dstart >= datestartint || dstart <= dateendint && dstart >= datestartint {
-			dstartstr := strconv.Itoa(dstart)
-			return "Cette salle n'est pas disponible le" + dstartstr
-		}
-		if dstart == datestartint {
-			if dstart != dateendint {
-				if hstart > timestartint {
-					hstartstr := strconv.Itoa(hstart)
-					return "Cette salle n'est pas disponible a" + hstartstr
-				}
-			} else {
-				if hstart > timestartint && hstart < timeendint {
-					hstartstr := strconv.Itoa(hstart)
-					return "Cette salle n'est pas disponible a" + hstartstr
-				}
-			}
-		}
+		dateStartTab := strings.Split(datestart, "-")
+		dateEndTab := strings.Split(dateend, "-")
+		timeStartTab := strings.Split(timestart, ":")
+		timeEndTab := strings.Split(timeend, ":")
 
-		if dend >= datestartint || dend <= dateendint && dend > datestartint {
-			dendstr := strconv.Itoa(dend)
-			return "Cette salle n'est pas disponible le" + dendstr
-		}
-		if dend == datestartint {
-			if dend != dateendint {
-				if hend > timestartint {
-					hendstr := strconv.Itoa(hend)
-					return "Cette salle n'est pas disponible a" + hendstr
-				}
-			} else {
-				if hend > timestartint && hend < timeendint {
-					hendstr := strconv.Itoa(hend)
-					return "Cette salle n'est pas disponible a" + hendstr
-				}
-			}
+		yStartDB, _ := strconv.Atoi(dateStartTab[2])
+		mStartDB, _ := strconv.Atoi(dateStartTab[1])
+		dStartDB, _ := strconv.Atoi(dateStartTab[0])
+
+		yEndDB, _ := strconv.Atoi(dateEndTab[2])
+		mEndDB, _ := strconv.Atoi(dateEndTab[1])
+		dEndDB, _ := strconv.Atoi(dateEndTab[0])
+
+		hStartDB, _ := strconv.Atoi(timeStartTab[0])
+		minStartDB, _ := strconv.Atoi(timeStartTab[1])
+
+		hEndDB, _ := strconv.Atoi(timeEndTab[0])
+		minEndDB, _ := strconv.Atoi(timeEndTab[1])
+
+		datestartDB := time.Date(yStartDB, time.Month(mStartDB), dStartDB, hStartDB, minStartDB, 0, 0, time.UTC)
+		dateendDB := time.Date(yEndDB, time.Month(mEndDB), dEndDB, hEndDB, minEndDB, 0, 0, time.UTC)
+
+		if dateendDATE.After(datestartDB) && dateendDATE.Before(dateendDB) || datestartDATE.Before(dateendDB) && dateendDATE.After(dateendDB) || datestartDATE.After(datestartDB) && dateendDATE.Before(dateendDB) {
+			return "cette reservation n'est pas disponible"
 		}
 
 	}

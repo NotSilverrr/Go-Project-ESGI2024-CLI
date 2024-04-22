@@ -22,7 +22,9 @@ type booking struct {
 func FormReservation(db *sql.DB) (int, int, int, int, int, int, int, int, int, int) {
 	var ID string
 	var roomID int
+	var startDay, startMonth, startYear, startHour, startMinute, endDay, endMonth, endYear, endHour, endMinute int
 	roomVerif := "pasOK"
+	timeVerif := "pasOK"
 	room.DisplayRooms(db)
 	for roomVerif != "ok" {
 		fmt.Printf("Quelle salle voulez vous réserver?\n")
@@ -35,7 +37,13 @@ func FormReservation(db *sql.DB) (int, int, int, int, int, int, int, int, int, i
 		log.Fatal(err)
 	}
 
-	startDay, startMonth, startYear, startHour, startMinute, endDay, endMonth, endYear, endHour, endMinute := time.GetBook()
+	for timeVerif != "ok" {
+		startDay, startMonth, startYear, startHour, startMinute, endDay, endMonth, endYear, endHour, endMinute = time.GetBook()
+		timeVerif = verif.VerifResa(roomID, startYear, endYear, startMonth, endMonth, startDay, endDay, startHour, endHour, startMinute, endMinute, db)
+		if timeVerif != "ok" {
+			println(timeVerif)
+		}
+	}
 
 	startDayStr := strconv.Itoa(startDay)
 	startMonthStr := strconv.Itoa(startMonth)
