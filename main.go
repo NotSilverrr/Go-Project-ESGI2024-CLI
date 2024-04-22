@@ -4,9 +4,6 @@ import (
 	book "Go-Project-ESGI2024-CLI/booking"
 	db "Go-Project-ESGI2024-CLI/db"
 	room "Go-Project-ESGI2024-CLI/room"
-	"Go-Project-ESGI2024-CLI/verif"
-	"log"
-	"strconv"
 
 	"fmt"
 
@@ -38,23 +35,7 @@ func main() {
 			book.CancelReservation(connec)
 
 		case 4:	
-			var ID string
-			roomVerif := "pasOK"
-
-			room.DisplayRooms(connec)
-
-			for roomVerif != "ok" {
-				fmt.Println("Quelle salle voulez-vous visualiser ?")
-				fmt.Scan(&ID)
-				roomVerif = verif.VerifIDRoom(ID, connec)
-			}
-
-			intID, err := strconv.Atoi(ID)
-			if err != nil {
-				log.Fatal(err)
-			}
-		
-			book.DisplayReservation(intID, connec)
+			book.VisualizeReservations(connec)
 			
 		case 5:
 			fmt.Println("A plus dans le bus !")

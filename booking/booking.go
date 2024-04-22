@@ -91,6 +91,27 @@ func CancelReservation(db *sql.DB) {
 	fmt.Printf("La réservation %d a bien été annulé.\n", resID)
 }
 
+
+func VisualizeReservations(db *sql.DB) {
+				var ID string
+			roomVerif := "pasOK"
+
+			room.DisplayRooms(db)
+
+			for roomVerif != "ok" {
+				fmt.Println("Quelle salle voulez-vous visualiser ?")
+				fmt.Scan(&ID)
+				roomVerif = verif.VerifIDRoom(ID, db)
+			}
+
+			intID, err := strconv.Atoi(ID)
+			if err != nil {
+				log.Fatal(err)
+			}
+		
+			DisplayReservation(intID, db)
+}
+
 func DisplayReservation(roomID int, db *sql.DB) {
 	// Get room name
 	var roomName string
