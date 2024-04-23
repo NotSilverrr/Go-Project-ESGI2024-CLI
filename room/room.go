@@ -10,12 +10,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-type Salle struct {
-	capacity int
-	name     string
-	booked   bool
-}
-
 func ShowAvailableRooms(db *sql.DB) {
 	//user choose start date and hour for is reservation
 	startDay, startMonth, startYear,

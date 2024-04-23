@@ -12,13 +12,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-type booking struct {
-	reference int
-	name      string
-	bookedOn  string
-	duration  int
-}
-
 func FormReservation(db *sql.DB) (int, int, int, int, int, int, int, int, int, int) {
 	var ID string
 	var roomID int
