@@ -74,7 +74,7 @@ func CreateReservation(idSalle int, dstart string, dend string, hstart string, h
 		println(res)
 		log.Fatal(err)
 	}
-	println("Votre réservation a bien été validé")
+  fmt.Printf("\033[32mVotre réservation a bien été validée\n\033[0m")
 }
 
 func CancelReservation(db *sql.DB) {
@@ -88,7 +88,7 @@ func CancelReservation(db *sql.DB) {
 		println(res)
 		log.Fatal(err)
 	}
-	fmt.Printf("La réservation %d a bien été annulé.\n", resID)
+  fmt.Printf("\033[32mLa réservation %d a bien été annulée.\033[0m\n", resID)
 }
 
 
