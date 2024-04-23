@@ -2,6 +2,7 @@ package salle
 
 import (
 	time "Go-Project-ESGI2024-CLI/time"
+	"Go-Project-ESGI2024-CLI/verif"
 	"database/sql"
 	"fmt"
 	"log"
@@ -18,13 +19,15 @@ type Salle struct {
 func ShowAvailableRooms(db *sql.DB) {
 	//user choose start date and hour for is reservation
 	startDay, startMonth, startYear,
-		startHour, startMinut,
-		endDay, endMonth, endYear,
-		endHour, endMinut := time.GetBook()
+	startHour, startMinut,
+	endDay, endMonth, endYear,
+	endHour, endMinut := time.GetBook()
+
+	var result string
 
 	fmt.Printf("Vous avez choisi une réservation commençant le %02d/%02d/%02d à %02d:%02d et se terminant le %02d/%02d/%02d à %02d:%02d.\nLes salles disponibles sont les suivantes : \n", startDay, startMonth, startYear, startHour, startMinut, endDay, endMonth, endYear, endHour, endMinut)
 
-	rows, err := db.Query("Select name from room") //booked condition
+	rows, err := db.Query("Select id, name from room")
 
 	if err != nil {
 		log.Fatal(err)
@@ -32,11 +35,17 @@ func ShowAvailableRooms(db *sql.DB) {
 	defer rows.Close()
 
 	for rows.Next() {
+		var id int
 		var name string
-		if err := rows.Scan(&name); err != nil {
+		if err := rows.Scan(&id, &name); err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println(name)
+
+		result = verif.VerifResa(id, startYear, endYear, startMonth, endMonth, startDay, endDay, startHour, endHour, startMinut, endMinut, db)
+
+		if result == "ok" {
+			fmt.Println(name)
+		}
 	}
 }
 
