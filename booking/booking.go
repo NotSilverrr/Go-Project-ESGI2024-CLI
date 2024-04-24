@@ -5,6 +5,7 @@ import (
 	time "Go-Project-ESGI2024-CLI/time"
 	"Go-Project-ESGI2024-CLI/verif"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"log"
 	"strconv"
@@ -12,11 +13,13 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-type booking struct {
-	reference int
-	name      string
-	bookedOn  string
-	duration  int
+type resa struct {
+	Id         int
+	Id_salle   int
+	Time_start string
+	Time_end   string
+	Date_start string
+	Date_end   string
 }
 
 func FormReservation(db *sql.DB) (int, int, int, int, int, int, int, int, int, int) {
@@ -74,7 +77,7 @@ func CreateReservation(idSalle int, dstart string, dend string, hstart string, h
 		println(res)
 		log.Fatal(err)
 	}
-  fmt.Printf("\033[32mVotre réservation a bien été validée\n\033[0m")
+	fmt.Printf("\033[32mVotre réservation a bien été validée\n\033[0m")
 }
 
 func CancelReservation(db *sql.DB) {
@@ -88,28 +91,27 @@ func CancelReservation(db *sql.DB) {
 		println(res)
 		log.Fatal(err)
 	}
-  fmt.Printf("\033[32mLa réservation %d a bien été annulée.\033[0m\n", resID)
+	fmt.Printf("\033[32mLa réservation %d a bien été annulée.\033[0m\n", resID)
 }
 
-
 func VisualizeReservations(db *sql.DB) {
-				var ID string
-			roomVerif := "pasOK"
+	var ID string
+	roomVerif := "pasOK"
 
-			room.DisplayRooms(db)
+	room.DisplayRooms(db)
 
-			for roomVerif != "ok" {
-				fmt.Println("Quelle salle voulez-vous visualiser ?")
-				fmt.Scan(&ID)
-				roomVerif = verif.VerifIDRoom(ID, db)
-			}
+	for roomVerif != "ok" {
+		fmt.Println("Quelle salle voulez-vous visualiser ?")
+		fmt.Scan(&ID)
+		roomVerif = verif.VerifIDRoom(ID, db)
+	}
 
-			intID, err := strconv.Atoi(ID)
-			if err != nil {
-				log.Fatal(err)
-			}
-		
-			DisplayReservation(intID, db)
+	intID, err := strconv.Atoi(ID)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	DisplayReservation(intID, db)
 }
 
 func DisplayReservation(roomID int, db *sql.DB) {
@@ -139,4 +141,49 @@ func DisplayReservation(roomID int, db *sql.DB) {
 		}
 		println(id, ".", datestart, timestart, " - ", dateend, timeend)
 	}
+}
+
+func ExportResaChoice(db *sql.DB) {
+	var roomChoice string
+	var roomChoiceInt int
+	roomVerif := "pasok"
+	room.DisplayRooms(db)
+
+	for roomVerif != "ok" {
+		fmt.Printf("De quelle salle voulez vous exporter les réservations?\n")
+		fmt.Scan(&roomChoice)
+		roomVerif = verif.VerifIDRoom(roomChoice, db)
+	}
+	roomChoiceInt, err := strconv.Atoi(roomChoice)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	ExportRoomResa(roomChoiceInt, db)
+}
+
+func ExportRoomResa(roomID int, db *sql.DB) {
+	var resaArray []resa
+	rows, err := db.Query("SELECT id, id_salle, date_start, date_end, time_start, time_end FROM reservation WHERE id_salle = ?", roomID)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for rows.Next() {
+		var resaTemp resa
+		err := rows.Scan(&resaTemp.Id, &resaTemp.Id_salle, &resaTemp.Date_start, &resaTemp.Date_end, &resaTemp.Time_start, &resaTemp.Time_end)
+		if err != nil {
+			log.Fatal(err)
+		}
+		resaArray = append(resaArray, resaTemp)
+	}
+	resaJSON, err := json.Marshal(resaArray)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	println(string(resaJSON))
 }

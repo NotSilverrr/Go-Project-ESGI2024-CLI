@@ -41,6 +41,9 @@ func main() {
 			room.AddRoom(connec)
 
 		case 6:
+			book.ExportResaChoice(connec)
+
+		case 7:
 			fmt.Println("A plus dans le bus !")
 			db.Db_closer(connec)
 			return
@@ -57,7 +60,8 @@ func displayMenu() int {
 		fmt.Println("3. Annuler une réservation")
 		fmt.Println("4. Visualiser les réservations")
 		fmt.Println("5. Créer une salle")
-		fmt.Println("6. Quitter")
+		fmt.Println("6. Exporter des réservations en JSON")
+		fmt.Println("7. Quitter")
 		fmt.Println("")
 		fmt.Println("Choisissez une option : ")
 		var choice int
@@ -72,8 +76,8 @@ func displayMenu() int {
 }
 
 func correctChoice(choice int) string {
-	if choice < 1 || choice > 5 {
-		return "\033[31mVeuillez choisir une option valide (entre 1 et 5).\033[0m"
+	if choice < 1 || choice > 7 {
+		return "\033[31mVeuillez choisir une option valide (entre 1 et 7).\033[0m"
 	}
 	return "ok"
 }
