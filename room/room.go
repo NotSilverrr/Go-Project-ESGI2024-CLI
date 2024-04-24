@@ -19,9 +19,9 @@ type Salle struct {
 func ShowAvailableRooms(db *sql.DB) {
 	//user choose start date and hour for is reservation
 	startDay, startMonth, startYear,
-	startHour, startMinut,
-	endDay, endMonth, endYear,
-	endHour, endMinut := time.GetBook()
+		startHour, startMinut,
+		endDay, endMonth, endYear,
+		endHour, endMinut := time.GetBook()
 
 	var result string
 
@@ -65,4 +65,22 @@ func DisplayRooms(db *sql.DB) {
 		}
 		fmt.Printf("%s. %s\n", id, name)
 	}
+}
+
+func AddRoom(db *sql.DB) {
+	var nameRoom string
+	var capacityRoom int
+
+	fmt.Printf("\nComment voulez vous appeler cette nouvelle salle?\n")
+	fmt.Scan(&nameRoom)
+	fmt.Printf("\nQuel est le nombre de personne maximum dans %s?\n", nameRoom)
+	fmt.Scan(&capacityRoom)
+
+	res, err := db.Exec("INSERT INTO reservation (name,capacity) VALUES (?,?)", nameRoom, capacityRoom)
+
+	if err != nil {
+		println(res)
+		log.Fatal(err)
+	}
+
 }

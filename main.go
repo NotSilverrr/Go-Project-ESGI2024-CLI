@@ -34,10 +34,13 @@ func main() {
 		case 3:
 			book.CancelReservation(connec)
 
-		case 4:	
+		case 4:
 			book.VisualizeReservations(connec)
-			
+
 		case 5:
+			room.AddRoom(connec)
+
+		case 6:
 			fmt.Println("A plus dans le bus !")
 			db.Db_closer(connec)
 			return
@@ -53,7 +56,8 @@ func displayMenu() int {
 		fmt.Println("2. Créer une réservation")
 		fmt.Println("3. Annuler une réservation")
 		fmt.Println("4. Visualiser les réservations")
-		fmt.Println("5. Quitter")
+		fmt.Println("5. Créer une salle")
+		fmt.Println("6. Quitter")
 		fmt.Println("")
 		fmt.Println("Choisissez une option : ")
 		var choice int
