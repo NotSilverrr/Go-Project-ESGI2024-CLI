@@ -76,7 +76,7 @@ func AddRoom(db *sql.DB) {
 	fmt.Printf("\nQuel est le nombre de personne maximum dans %s?\n", nameRoom)
 	fmt.Scan(&capacityRoom)
 
-	res, err := db.Exec("INSERT INTO reservation (name,capacity) VALUES (?,?)", nameRoom, capacityRoom)
+	res, err := db.Exec("INSERT INTO room (name,capacity) VALUES (?,?)", nameRoom, capacityRoom)
 
 	if err != nil {
 		println(res)
