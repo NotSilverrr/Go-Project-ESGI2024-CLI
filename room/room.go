@@ -1,6 +1,7 @@
 package salle
 
 import (
+	"Go-Project-ESGI2024-CLI/group"
 	time "Go-Project-ESGI2024-CLI/time"
 	"Go-Project-ESGI2024-CLI/verif"
 	"database/sql"
@@ -17,11 +18,13 @@ func ShowAvailableRooms(db *sql.DB) {
 	endDay, endMonth, endYear,
 	endHour, endMinut := time.GetBook()
 
+	capacity := group.GetGroupSize()
+
 	var result string
 
-	fmt.Printf("Vous avez choisi une réservation commençant le %02d/%02d/%02d à %02d:%02d et se terminant le %02d/%02d/%02d à %02d:%02d.\nLes salles disponibles sont les suivantes : \n", startDay, startMonth, startYear, startHour, startMinut, endDay, endMonth, endYear, endHour, endMinut)
+	fmt.Printf("Vous avez choisi une réservation commençant le %02d/%02d/%02d à %02d:%02d et se terminant le %02d/%02d/%02d à %02d:%02d.\nVous souhaitez une salle de %d personnes. \nLes salles disponibles sont les suivantes : \n", startDay, startMonth, startYear, startHour, startMinut, endDay, endMonth, endYear, endHour, endMinut, capacity)
 
-	rows, err := db.Query("Select id, name from room")
+	rows, err := db.Query("Select id, name from room where capacity >= ?", capacity)
 
 	if err != nil {
 		log.Fatal(err)
