@@ -35,7 +35,13 @@ func main() {
 			book.CancelReservation(connec)
 
 		case 4:
-			book.VisualizeReservations(connec)
+			choiceResa := displayMenuViewResa()
+			if choiceResa == 1 {
+				book.VisualizeReservationsRoom(connec)
+			}
+			if choiceResa == 2 {
+				book.DisplayAllReservation(connec)
+			}
 
 		case 5:
 			room.AddRoom(connec)
@@ -75,9 +81,36 @@ func displayMenu() int {
 	}
 }
 
+func displayMenuViewResa() int {
+
+	for {
+		fmt.Println("-----------------------------------------------------------")
+		fmt.Println("1. Lister réservations par rapport a une salle")
+		fmt.Println("2. Lister toute les réservations")
+		fmt.Println("3. Retour")
+		fmt.Println("")
+		fmt.Println("Choisissez une option : ")
+		var choice int
+		fmt.Scan(&choice)
+
+		if msg := correctChoiceViewResa(choice); msg != "ok" {
+			fmt.Println(msg)
+			continue
+		}
+		return choice
+	}
+}
+
 func correctChoice(choice int) string {
 	if choice < 1 || choice > 7 {
 		return "\033[31mVeuillez choisir une option valide (entre 1 et 7).\033[0m"
+	}
+	return "ok"
+}
+
+func correctChoiceViewResa(choice int) string {
+	if choice < 1 || choice > 3 {
+		return "\033[31mVeuillez choisir une option valide (entre 1 et 3).\033[0m"
 	}
 	return "ok"
 }

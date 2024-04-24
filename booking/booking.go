@@ -95,7 +95,7 @@ func CancelReservation(db *sql.DB) {
 	fmt.Printf("\033[32mLa réservation %d a bien été annulée.\033[0m\n", resID)
 }
 
-func VisualizeReservations(db *sql.DB) {
+func VisualizeReservationsRoom(db *sql.DB) {
 	var ID string
 	roomVerif := "pasOK"
 
@@ -113,6 +113,40 @@ func VisualizeReservations(db *sql.DB) {
 	}
 
 	DisplayReservation(intID, db)
+}
+
+func DisplayAllReservation(db *sql.DB) {
+	println("Réservations :")
+
+	// Get room reservations
+	rows, err := db.Query("SELECT id, id_salle,date_start, date_end, time_start, time_end FROM reservation")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var id, id_salle int
+		var datestart, dateend, timestart, timeend string
+		err := rows.Scan(&id, &id_salle, &datestart, &dateend, &timestart, &timeend)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		var roomName string
+
+		err = db.QueryRow("SELECT name FROM room WHERE id = ?", id_salle).Scan(&roomName)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		println(id, ".", roomName, datestart, timestart, " - ", dateend, timeend)
+	}
 }
 
 func DisplayReservation(roomID int, db *sql.DB) {
