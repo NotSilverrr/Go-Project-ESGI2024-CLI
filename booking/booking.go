@@ -26,7 +26,7 @@ func FormReservation(db *sql.DB) (int, int, int, int, int, int, int, int, int, i
 	for roomVerif != "ok" {
 		fmt.Printf("Quelle salle voulez vous réserver?\n")
 		fmt.Scan(&ID)
-		roomVerif = verif.VerifIDRoom(ID, db)
+		roomVerif = verif.VerifIDRoom(ID, groupSize, db)
 	}
 	roomID, err := strconv.Atoi(ID)
 
@@ -98,7 +98,7 @@ func VisualizeReservations(db *sql.DB) {
 			for roomVerif != "ok" {
 				fmt.Println("Quelle salle voulez-vous visualiser ?")
 				fmt.Scan(&ID)
-				roomVerif = verif.VerifIDRoom(ID, db)
+				roomVerif = verif.VerifIDRoom(ID, 0,db)
 			}
 
 			intID, err := strconv.Atoi(ID)
