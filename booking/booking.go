@@ -1,6 +1,7 @@
 package booking
 
 import (
+	"Go-Project-ESGI2024-CLI/group"
 	room "Go-Project-ESGI2024-CLI/room"
 	time "Go-Project-ESGI2024-CLI/time"
 	"Go-Project-ESGI2024-CLI/verif"
@@ -18,7 +19,10 @@ func FormReservation(db *sql.DB) (int, int, int, int, int, int, int, int, int, i
 	var startDay, startMonth, startYear, startHour, startMinute, endDay, endMonth, endYear, endHour, endMinute int
 	roomVerif := "pasOK"
 	timeVerif := "pasOK"
-	room.DisplayRooms(db)
+
+	groupSize := group.GetGroupSize()
+	room.DisplayRoom(groupSize, db)
+
 	for roomVerif != "ok" {
 		fmt.Printf("Quelle salle voulez vous réserver?\n")
 		fmt.Scan(&ID)

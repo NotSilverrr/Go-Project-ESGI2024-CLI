@@ -195,7 +195,7 @@ func VerifGroupSize(groupSize int) string {
 		} 
 		
 		if groupSize > 1000 {
-		return "\033[31mAucune de nos salles n'a une telle capacité, louez un château\033[0m"
+		return "\033[31mAucune de nos salles n'a une telle capacité, louez un château.\033[0m"
 	}
 	return "ok"
 }

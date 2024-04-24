@@ -47,8 +47,9 @@ func ShowAvailableRooms(db *sql.DB) {
 	}
 }
 
-func DisplayRooms(db *sql.DB) {
-	rows, err := db.Query("Select id,name from room")
+func DisplayRoom(groupSize int, db *sql.DB) {
+	
+	rows, err := db.Query("Select id,name, capacity from room where capacity >= ?", groupSize)
 
 	if err != nil {
 		log.Fatal(err)
@@ -58,9 +59,30 @@ func DisplayRooms(db *sql.DB) {
 	for rows.Next() {
 		var name string
 		var id string
-		if err := rows.Scan(&id, &name); err != nil {
+		var capacity int
+		if err := rows.Scan(&id, &name, &capacity); err != nil {
 			log.Fatal(err)
 		}
-		fmt.Printf("%s. %s\n", id, name)
+		fmt.Printf("%s. %s -- %d places\n", id, name, capacity)
+	}
+}
+
+func DisplayRooms(db *sql.DB) {
+	
+	rows, err := db.Query("Select id,name, capacity from room")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var name string
+		var id string
+		var capacity int
+		if err := rows.Scan(&id, &name, &capacity); err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("%s. %s -- %d places\n", id, name, capacity)
 	}
 }
