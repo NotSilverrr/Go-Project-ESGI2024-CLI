@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"strconv"
 
@@ -185,5 +186,21 @@ func ExportRoomResa(roomID int, db *sql.DB) {
 		log.Fatal(err)
 	}
 
-	println(string(resaJSON))
+	var roomName string
+
+	err = db.QueryRow("SELECT name FROM room WHERE id = ?", roomID).Scan(&roomName)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	filename := "./JSONoutput/" + roomName
+
+	err = ioutil.WriteFile(filename, resaJSON, 0644)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("Votre export a bien été enregistré a %s !\n", filename)
 }
