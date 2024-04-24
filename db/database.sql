@@ -25,7 +25,7 @@ INSERT INTO room(name, capacity)
 VALUES ("Rose", 50);
 
 INSERT INTO room(name, capacity)
-VALUES ("Tournesol", 100);
+VALUES ("Tournesol", 500);
 
 INSERT INTO room(name, capacity)
-VALUES ("Tulipe", 100);
+VALUES ("Tulipe", 1000);
