@@ -22,9 +22,9 @@ func ShowAvailableRooms(db *sql.DB) {
 
 	var result string
 
-	fmt.Printf("Vous avez choisi une réservation commençant le %02d/%02d/%02d à %02d:%02d et se terminant le %02d/%02d/%02d à %02d:%02d.\nVous souhaitez une salle de %d personnes. \nLes salles disponibles sont les suivantes : \n", startDay, startMonth, startYear, startHour, startMinut, endDay, endMonth, endYear, endHour, endMinut, capacity)
+	fmt.Printf("Vous avez choisi une réservation commençant le %02d/%02d/%02d à %02d:%02d et se terminant le %02d/%02d/%02d à %02d:%02d.\nVous souhaitez une salle pouvant accueillir au minimum %d personnes. \nLes salles disponibles sont les suivantes : \n", startDay, startMonth, startYear, startHour, startMinut, endDay, endMonth, endYear, endHour, endMinut, capacity)
 
-	rows, err := db.Query("Select id, name from room where capacity >= ?", capacity)
+	rows, err := db.Query("Select id, name, capacity from room where capacity >= ?", capacity)
 
 	if err != nil {
 		log.Fatal(err)
@@ -34,14 +34,15 @@ func ShowAvailableRooms(db *sql.DB) {
 	for rows.Next() {
 		var id int
 		var name string
-		if err := rows.Scan(&id, &name); err != nil {
+		var capacity int
+		if err := rows.Scan(&id, &name, &capacity); err != nil {
 			log.Fatal(err)
 		}
 
 		result = verif.VerifResa(id, startYear, endYear, startMonth, endMonth, startDay, endDay, startHour, endHour, startMinut, endMinut, db)
 
 		if result == "ok" {
-			fmt.Println(name)
+			fmt.Printf("%s -- %d places\n", name, capacity)
 		}
 	}
 }
