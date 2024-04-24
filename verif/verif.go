@@ -188,3 +188,15 @@ func VerifIDRoom(id string, db *sql.DB) string {
 	}
 
 }
+
+func VerifGroupSize(groupSize int) string {
+	if groupSize < 1 {
+		return "\033[31mVous ne pouvez pas être si peu\033[0m"
+		} 
+		
+		if groupSize > 1000 {
+		return "\033[31mAucune de nos salles n'a une telle capacité, louez un château\033[0m"
+	}
+	return "ok"
+}
+
