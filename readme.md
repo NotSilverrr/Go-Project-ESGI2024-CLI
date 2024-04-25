@@ -4,6 +4,11 @@
 
 Développer un système de réservation de salles en ligne de commande pour gérer les réservations,les salles et les utilisateurs.
 
+## Commandes pour lancer le Projet
+
+docker compose up
+go run ./main.go
+
 ## Description détaillée
 
 #### Interaction avec l'utilisateur
