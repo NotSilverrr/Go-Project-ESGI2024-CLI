@@ -146,7 +146,7 @@ func VerifResa(roomID int, ystart int, yend int, mstart int, mend int, dstart in
 		dateendDB := time.Date(yEndDB, time.Month(mEndDB), dEndDB, hEndDB, minEndDB, 0, 0, time.UTC)
 
 		if dateendDATE.After(datestartDB) && dateendDATE.Before(dateendDB) || datestartDATE.Before(dateendDB) && dateendDATE.After(dateendDB) || datestartDATE.After(datestartDB) && dateendDATE.Before(dateendDB) {
-			return "cette reservation n'est pas disponible"
+			return "cette réservation n'est pas disponible !"
 		}
 
 	}
@@ -157,7 +157,7 @@ func VerifIDRoom(id string, groupSize int, db *sql.DB) string {
 	idRoom, err := strconv.Atoi(id)
 
 	if err != nil {
-		fmt.Printf("\033[31mL'id de la salle doit etre un chiffre\n\033[0m")
+		fmt.Printf("\033[31mL'id de la salle doit être un chiffre\n\033[0m")
 		return "pasOK"
 	}
 
@@ -183,14 +183,14 @@ func VerifIDRoom(id string, groupSize int, db *sql.DB) string {
 	if verif == 1 {
 		return "ok"
 	} else {
-		fmt.Printf("\033[31mLa salle %d n'existe pas\n\033[0m", idRoom)
+		fmt.Printf("\033[31mLa salle %d n'existe pas !\n\033[0m", idRoom)
 		return "pasOK"
 	}
 }
 
 func VerifGroupSize(groupSize int) string {
 	if groupSize < 1 {
-		return "\033[31mVous ne pouvez pas être si peu\033[0m"
+		return "\033[31mVous ne pouvez pas être si peu !\033[0m"
 		} 
 		
 		if groupSize > 1000 {

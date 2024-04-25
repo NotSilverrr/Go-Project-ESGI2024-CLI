@@ -71,9 +71,9 @@ func AddRoom(db *sql.DB) {
 	var nameRoom string
 	var capacityRoom int
 
-	fmt.Printf("\nComment voulez vous appeler cette nouvelle salle?\n")
+	fmt.Printf("\nComment voulez-vous appeler cette nouvelle salle?\n")
 	fmt.Scan(&nameRoom)
-	fmt.Printf("\nQuel est le nombre de personne maximum dans %s?\n", nameRoom)
+	fmt.Printf("\nQuel est le nombre de personnes maximum dans %s?\n", nameRoom)
 	fmt.Scan(&capacityRoom)
 
 	res, err := db.Exec("INSERT INTO room (name,capacity) VALUES (?,?)", nameRoom, capacityRoom)

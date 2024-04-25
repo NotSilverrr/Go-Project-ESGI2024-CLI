@@ -85,8 +85,8 @@ func displayMenuViewResa() int {
 
 	for {
 		fmt.Println("-----------------------------------------------------------")
-		fmt.Println("1. Lister réservations par rapport a une salle")
-		fmt.Println("2. Lister toute les réservations")
+		fmt.Println("1. Lister les réservations par rapport à une salle")
+		fmt.Println("2. Lister toutes les réservations")
 		fmt.Println("3. Retour")
 		fmt.Println("")
 		fmt.Println("Choisissez une option : ")

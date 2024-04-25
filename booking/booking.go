@@ -87,7 +87,7 @@ func CreateReservation(idSalle int, dstart string, dend string, hstart string, h
 
 func CancelReservation(db *sql.DB) {
 	var resID int
-	fmt.Printf("Quelle réservation voulez vous annuler?\n")
+	fmt.Printf("Quelle réservation voulez-vous annuler?\n")
 	fmt.Scan(&resID)
 
 	res, err := db.Exec("DELETE FROM reservation WHERE id=?", resID)
@@ -190,7 +190,7 @@ func ExportResaChoice(db *sql.DB) {
 	room.DisplayRoom(0, db)
 
 	for roomVerif != "ok" {
-		fmt.Printf("De quelle salle voulez vous exporter les réservations?\n")
+		fmt.Printf("De quelle salle voulez-vous exporter les réservations?\n")
 		fmt.Scan(&roomChoice)
 		roomVerif = verif.VerifIDRoom(roomChoice, 0, db)
 	}
@@ -241,5 +241,5 @@ func ExportRoomResa(roomID int, db *sql.DB) {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Votre export a bien été enregistré a %s !\n", filename)
+	fmt.Printf("Votre export a bien été enregistré dans %s !\n", filename)
 }
