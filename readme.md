@@ -17,7 +17,7 @@ Implémente la gestion des entrées utilisateur pour permettre la navigation et 
 
 #### Navigation
 
-Permet à l'utilisateur de naviguer facilement entre les différentes fonctionnalités.
+Permet à l'utilisateur de sélectionner les différentes fonctionnalités.
 
 ### Fonctionnalités du menu
 
