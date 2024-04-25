@@ -153,7 +153,7 @@ func VerifResa(roomID int, ystart int, yend int, mstart int, mend int, dstart in
 	return "ok"
 }
 
-func VerifIDRoom(id string, db *sql.DB) string {
+func VerifIDRoom(id string, groupSize int, db *sql.DB) string {
 	idRoom, err := strconv.Atoi(id)
 
 	if err != nil {
@@ -162,7 +162,7 @@ func VerifIDRoom(id string, db *sql.DB) string {
 	}
 
 	var verif int = 0
-	rows, err := db.Query("Select id from room")
+	rows, err := db.Query("Select id from room where capacity >= ?", groupSize)
 
 	if err != nil {
 		log.Fatal(err)
@@ -186,5 +186,16 @@ func VerifIDRoom(id string, db *sql.DB) string {
 		fmt.Printf("\033[31mLa salle %d n'existe pas\n\033[0m", idRoom)
 		return "pasOK"
 	}
-
 }
+
+func VerifGroupSize(groupSize int) string {
+	if groupSize < 1 {
+		return "\033[31mVous ne pouvez pas être si peu\033[0m"
+		} 
+		
+		if groupSize > 1000 {
+		return "\033[31mAucune de nos salles n'a une telle capacité, louez un château.\033[0m"
+	}
+	return "ok"
+}
+

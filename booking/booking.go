@@ -1,6 +1,7 @@
 package booking
 
 import (
+	"Go-Project-ESGI2024-CLI/group"
 	room "Go-Project-ESGI2024-CLI/room"
 	time "Go-Project-ESGI2024-CLI/time"
 	"Go-Project-ESGI2024-CLI/verif"
@@ -29,11 +30,14 @@ func FormReservation(db *sql.DB) (int, int, int, int, int, int, int, int, int, i
 	var startDay, startMonth, startYear, startHour, startMinute, endDay, endMonth, endYear, endHour, endMinute int
 	roomVerif := "pasOK"
 	timeVerif := "pasOK"
-	room.DisplayRooms(db)
+
+	groupSize := group.GetGroupSize()
+	room.DisplayRoom(groupSize, db)
+
 	for roomVerif != "ok" {
 		fmt.Printf("Quelle salle voulez vous réserver?\n")
 		fmt.Scan(&ID)
-		roomVerif = verif.VerifIDRoom(ID, db)
+		roomVerif = verif.VerifIDRoom(ID, groupSize, db)
 	}
 	roomID, err := strconv.Atoi(ID)
 
@@ -99,12 +103,12 @@ func VisualizeReservationsRoom(db *sql.DB) {
 	var ID string
 	roomVerif := "pasOK"
 
-	room.DisplayRooms(db)
+	room.DisplayRoom(0, db)
 
 	for roomVerif != "ok" {
 		fmt.Println("Quelle salle voulez-vous visualiser ?")
 		fmt.Scan(&ID)
-		roomVerif = verif.VerifIDRoom(ID, db)
+		roomVerif = verif.VerifIDRoom(ID, 0, db)
 	}
 
 	intID, err := strconv.Atoi(ID)
@@ -176,18 +180,19 @@ func DisplayReservation(roomID int, db *sql.DB) {
 		}
 		println(id, ".", datestart, timestart, " - ", dateend, timeend)
 	}
+
 }
 
 func ExportResaChoice(db *sql.DB) {
 	var roomChoice string
 	var roomChoiceInt int
 	roomVerif := "pasok"
-	room.DisplayRooms(db)
+	room.DisplayRoom(0, db)
 
 	for roomVerif != "ok" {
 		fmt.Printf("De quelle salle voulez vous exporter les réservations?\n")
 		fmt.Scan(&roomChoice)
-		roomVerif = verif.VerifIDRoom(roomChoice, db)
+		roomVerif = verif.VerifIDRoom(roomChoice, 0, db)
 	}
 	roomChoiceInt, err := strconv.Atoi(roomChoice)
 
